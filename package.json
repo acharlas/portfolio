@@ -11,7 +11,10 @@
   "dependencies": {
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.2.15"
+    "next": "14.2.15",
+    "lucide-react": "^0.266.0",
+    "eslint": "8.49.0",
+    "eslint-config-next": "13.5.4"
   },
   "devDependencies": {
     "typescript": "^5",
