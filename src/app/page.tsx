@@ -79,7 +79,10 @@ const PortfolioInterface: React.FC = () => {
                 </div>
               </div>
               <p className="text-sm mb-4">
-                Hi! I'm John Doe, a junior developer with experience in <b>Python</b>, <b>Docker</b> and <b>C</b>. I enjoy solving problems and building efficient, creative solutions. Currently, I'm focused on [mention specific area like front-end, back-end, etc.], and I'm always eager to learn and grow in the tech world.
+              <p>
+  Hi! I&apos;m John Doe, a junior developer with experience in <b>Python</b>, <b>Docker</b>, and <b>C</b>. I enjoy solving problems and building efficient, creative solutions. Currently, I&apos;m focused on [mention specific area like front-end, back-end, etc.], and I&apos;m always eager to learn and grow in the tech world.
+</p>
+
               </p>
               <div className="mb-4">
                 <h4 className="font-semibold mb-2">Top Skills</h4>
