@@ -13,22 +13,20 @@ permissions:
   contents: read
   pages: write
   id-token: write
+  security-events: write # Required for CodeQL in codeql-analysis job
 
 concurrency:
   group: "pages"
   cancel-in-progress: false
 
 jobs:
-  # Build and Check job
+  # Build job
   build:
     runs-on: ubuntu-latest
-
     steps:
-      # Step 1: Checkout Code
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # Step 2: Detect Package Manager
       - name: Detect Package Manager
         id: detect-package-manager
         run: |
@@ -45,63 +43,69 @@ jobs:
             exit 1
           fi
 
-      # Step 3: Setup Node
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: "20"
           cache: ${{ steps.detect-package-manager.outputs.manager }}
 
-      # Step 4: Install Dependencies
       - name: Install Dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
 
-      # Step 5: Static Code Analysis (CodeQL)
-      - name: Run CodeQL Analysis
-        uses: github/codeql-action/analyze@v2
-
-      # Step 6: Linting with ESLint
       - name: Run ESLint
         run: yarn eslint .
 
-      # Step 7: Dependency Audit
       - name: Run Dependency Audit
         run: yarn audit
 
-      # Step 8: Run Tests with Coverage
       - name: Run Tests with Coverage
         run: yarn test --coverage
         env:
           CI: true # Fail if tests do not pass
 
-      # Step 9: Build Next.js Project
       - name: Build Project
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
 
-      # Step 10: Export Static Site for Deployment
       - name: Export Static Site
         run: yarn export
 
-      # Step 11: Upload Artifact for Deployment
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./out
 
-      # Step 12: Docker Image Security Scan with Trivy
-      - name: Scan Docker Image with Trivy
-        run: docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image my-portfolio
+  # Separate CodeQL Analysis job
+  codeql-analysis:
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
 
-  # Deployment job
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: "javascript" # Adjust languages as needed
+
+      - name: Build Project for CodeQL
+        run: |
+          yarn install
+          yarn build  # Necessary to make the code ready for analysis
+
+      - name: Run CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+
+  # Deployment job that depends on both build and codeql-analysis
   deploy:
     runs-on: ubuntu-latest
-    needs: build
+    needs: [build, codeql-analysis]
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-      # Step 13: Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
