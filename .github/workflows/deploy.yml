@@ -1,0 +1,107 @@
+name: CI/CD for Portfolio
+
+on:
+  push:
+    branches: ["main", "dev"]
+  pull_request:
+    branches: ["main", "dev"]
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * 0" # Runs weekly on Sunday at midnight
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  # Build and Check job
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout Code
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # Step 2: Detect Package Manager
+      - name: Detect Package Manager
+        id: detect-package-manager
+        run: |
+          if [ -f "${{ github.workspace }}/yarn.lock" ]; then
+            echo "manager=yarn" >> $GITHUB_OUTPUT
+            echo "command=install" >> $GITHUB_OUTPUT
+            echo "runner=yarn" >> $GITHUB_OUTPUT
+          elif [ -f "${{ github.workspace }}/package.json" ]; then
+            echo "manager=npm" >> $GITHUB_OUTPUT
+            echo "command=ci" >> $GITHUB_OUTPUT
+            echo "runner=npx --no-install" >> $GITHUB_OUTPUT
+          else
+            echo "Unable to determine package manager"
+            exit 1
+          fi
+
+      # Step 3: Setup Node
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: ${{ steps.detect-package-manager.outputs.manager }}
+
+      # Step 4: Install Dependencies
+      - name: Install Dependencies
+        run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
+
+      # Step 5: Static Code Analysis (CodeQL)
+      - name: Run CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+
+      # Step 6: Linting with ESLint
+      - name: Run ESLint
+        run: yarn eslint .
+
+      # Step 7: Dependency Audit
+      - name: Run Dependency Audit
+        run: yarn audit
+
+      # Step 8: Run Tests with Coverage
+      - name: Run Tests with Coverage
+        run: yarn test --coverage
+        env:
+          CI: true # Fail if tests do not pass
+
+      # Step 9: Build Next.js Project
+      - name: Build Project
+        run: ${{ steps.detect-package-manager.outputs.runner }} next build
+
+      # Step 10: Export Static Site for Deployment
+      - name: Export Static Site
+        run: yarn export
+
+      # Step 11: Upload Artifact for Deployment
+      - name: Upload Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./out
+
+      # Step 12: Docker Image Security Scan with Trivy
+      - name: Scan Docker Image with Trivy
+        run: docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image my-portfolio
+
+  # Deployment job
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      # Step 13: Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
