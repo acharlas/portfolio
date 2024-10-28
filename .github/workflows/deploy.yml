@@ -52,8 +52,8 @@ jobs:
       - name: Install Dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
 
-      - name: Run ESLint
-        run: yarn eslint .
+      - name: Run Lint
+        run: yarn run lint
 
       - name: Run Dependency Audit
         run: yarn audit
