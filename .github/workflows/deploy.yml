@@ -82,7 +82,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v2
+        uses: github/codeql-action/init@v3
         with:
           languages: "javascript" # Adjust languages as needed
 
@@ -92,7 +92,7 @@ jobs:
           yarn build  # Necessary to make the code ready for analysis
 
       - name: Run CodeQL Analysis
-        uses: github/codeql-action/analyze@v2
+        uses: github/codeql-action/analyze@v3
 
   # Deployment job that depends on both build and codeql-analysis
   deploy:
