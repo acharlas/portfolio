@@ -4,12 +4,16 @@ export default function ResumePage() {
       <div className="w-full max-w-6xl">
         <div className="blue-divider w-full mb-16"></div>
 
-        <h1 className="text-4xl md:text-5xl font-bold text-gray-300 mb-8">Resume</h1>
+        <h1 className="text-4xl md:text-5xl font-bold text-gray-300 mb-8">
+          Resume
+        </h1>
 
         <div className="grid gap-8 md:grid-cols-2">
           <div className="bg-gray-900 rounded-lg p-6 border border-gray-800">
             <h2 className="text-xl font-bold mb-4">English Version</h2>
-            <p className="text-gray-400 mb-4">Download my resume in English format</p>
+            <p className="text-gray-400 mb-4">
+              Download my resume in English format
+            </p>
             <a
               href="https://drive.google.com/your-english-resume-link"
               target="_blank"
@@ -22,7 +26,9 @@ export default function ResumePage() {
 
           <div className="bg-gray-900 rounded-lg p-6 border border-gray-800">
             <h2 className="text-xl font-bold mb-4">French Version</h2>
-            <p className="text-gray-400 mb-4">Téléchargez mon CV en format français</p>
+            <p className="text-gray-400 mb-4">
+              Téléchargez mon CV en format français
+            </p>
             <a
               href="https://drive.google.com/your-french-resume-link"
               target="_blank"
@@ -40,7 +46,10 @@ export default function ResumePage() {
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-4 md:mb-0">
-              <p className="text-gray-500 text-sm">&copy; {new Date().getFullYear()} John Doe. All rights reserved.</p>
+              <p className="text-gray-500 text-sm">
+                &copy; {new Date().getFullYear()} Axel Charlassier. All rights
+                reserved.
+              </p>
             </div>
 
             <div className="flex space-x-6">
@@ -117,6 +126,5 @@ export default function ResumePage() {
         </div>
       </footer>
     </div>
-  )
+  );
 }
-

@@ -1,22 +1,27 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { cn } from "@/lib/utils"
-import { FileText, ChevronDown } from "lucide-react"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
+import { FileText, ChevronDown } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function Header() {
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   const links = [
     { href: "/", label: "About Me" },
     { href: "/projects", label: "Projects" },
     { href: "/contact", label: "Contact" },
-  ]
+  ];
 
   return (
-    <div className="flex justify-center py-8">
+    <div className="sticky top-0 z-50 flex justify-center py-4 w-full">
       <nav className="bg-black/30 backdrop-blur-md rounded-full px-6 py-2 border border-white/10">
         <ul className="flex items-center space-x-6">
           {links.map((link) => (
@@ -25,7 +30,7 @@ export default function Header() {
                 href={link.href}
                 className={cn(
                   "text-sm font-medium transition-colors hover:text-[#00a2ff]",
-                  pathname === link.href ? "text-[#00a2ff]" : "text-white/80",
+                  pathname === link.href ? "text-[#00a2ff]" : "text-white/80"
                 )}
               >
                 {link.label}
@@ -38,7 +43,7 @@ export default function Header() {
         </ul>
       </nav>
     </div>
-  )
+  );
 }
 
 function ResumeDropdown() {
@@ -72,6 +77,5 @@ function ResumeDropdown() {
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }
-

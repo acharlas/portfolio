@@ -1,5 +1,5 @@
-import Image from "next/image"
-import { ExternalLink, Github } from "lucide-react"
+import Image from "next/image";
+import { ExternalLink, Github } from "lucide-react";
 
 // This would typically come from a database or CMS
 // For easy modification, you could use a JSON file or a database
@@ -27,7 +27,8 @@ const projects = [
   {
     id: 3,
     title: "Project Three",
-    description: "A description of your third project. Mention any challenges you faced and how you overcame them.",
+    description:
+      "A description of your third project. Mention any challenges you faced and how you overcame them.",
     technologies: ["Vue.js", "Firebase", "SCSS"],
     image: "/placeholder.svg?height=300&width=600",
     githubUrl: "https://github.com/yourusername/project-three",
@@ -36,13 +37,14 @@ const projects = [
   {
     id: 4,
     title: "Project Four",
-    description: "A description of your fourth project. Talk about the impact it had or the problem it solved.",
+    description:
+      "A description of your fourth project. Talk about the impact it had or the problem it solved.",
     technologies: ["React Native", "Redux", "Express"],
     image: "/placeholder.svg?height=300&width=600",
     githubUrl: "https://github.com/yourusername/project-four",
     liveUrl: "https://project-four.example.com",
   },
-]
+];
 
 export default function ProjectsPage() {
   return (
@@ -50,7 +52,9 @@ export default function ProjectsPage() {
       <div className="w-full max-w-6xl">
         <div className="blue-divider w-full mb-16"></div>
 
-        <h1 className="text-4xl md:text-5xl font-bold text-gray-300 mb-8">Projects</h1>
+        <h1 className="text-4xl md:text-5xl font-bold text-gray-300 mb-8">
+          Projects
+        </h1>
 
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {projects.map((project) => (
@@ -64,7 +68,10 @@ export default function ProjectsPage() {
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-4 md:mb-0">
-              <p className="text-gray-500 text-sm">&copy; {new Date().getFullYear()} John Doe. All rights reserved.</p>
+              <p className="text-gray-500 text-sm">
+                &copy; {new Date().getFullYear()} Axel Charlassier. All rights
+                reserved.
+              </p>
             </div>
 
             <div className="flex space-x-6">
@@ -141,7 +148,7 @@ export default function ProjectsPage() {
         </div>
       </footer>
     </div>
-  )
+  );
 }
 
 function ProjectCard({ project }: { project: (typeof projects)[0] }) {
@@ -163,7 +170,10 @@ function ProjectCard({ project }: { project: (typeof projects)[0] }) {
 
         <div className="mb-4 flex flex-wrap gap-2">
           {project.technologies.map((tech) => (
-            <span key={tech} className="text-xs bg-black/50 text-[#00a2ff] px-2 py-1 rounded-full">
+            <span
+              key={tech}
+              className="text-xs bg-black/50 text-[#00a2ff] px-2 py-1 rounded-full"
+            >
               {tech}
             </span>
           ))}
@@ -198,6 +208,5 @@ function ProjectCard({ project }: { project: (typeof projects)[0] }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
-

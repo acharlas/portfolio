@@ -1,9 +1,18 @@
-import Link from "next/link"
-import { ArrowRight } from "lucide-react"
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
 export default function Home() {
   // Tech stack items
-  const techStack = ["JavaScript", "TypeScript", "React", "Next.js", "Node.js", "Express", "MongoDB", "Tailwind CSS"]
+  const techStack = [
+    "JavaScript",
+    "TypeScript",
+    "React",
+    "Next.js",
+    "Node.js",
+    "Express",
+    "MongoDB",
+    "Tailwind CSS",
+  ];
 
   return (
     <div className="flex flex-col items-center">
@@ -15,15 +24,19 @@ export default function Home() {
           <div className="flex flex-col items-center mt-[-10vh]">
             {/* Heading */}
             <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-gray-300 text-center mb-6">
-              Hi, I'm John Doe
+              Hi, I&apos;m Axel
             </h1>
 
             {/* Subtitle */}
-            <p className="text-xl md:text-2xl text-gray-500 mb-12">Full-Stack Web Developer</p>
+            <p className="text-xl md:text-2xl text-gray-500 mb-12">
+              Full-Stack Web Developer
+            </p>
 
             {/* Tech Stack */}
             <div className="mb-16">
-              <h2 className="text-center text-gray-400 mb-4 text-sm uppercase tracking-wider">Tech Stack</h2>
+              <h2 className="text-center text-gray-400 mb-4 text-sm uppercase tracking-wider">
+                Tech Stack
+              </h2>
               <div className="flex flex-wrap justify-center gap-3">
                 {techStack.map((tech) => (
                   <span
@@ -36,14 +49,22 @@ export default function Home() {
               </div>
             </div>
 
-            {/* CTA Button */}
-            <Link
-              href="/projects"
-              className="group flex items-center bg-[#00a2ff] hover:bg-[#0080cc] text-white px-6 py-3 rounded-full transition-all"
-            >
-              See My Work
-              <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
+            {/* CTA Buttons */}
+            <div className="flex flex-wrap gap-4 justify-center">
+              <Link
+                href="/projects"
+                className="group flex items-center bg-[#00a2ff] hover:bg-[#0080cc] text-white px-6 py-3 rounded-full transition-all"
+              >
+                See My Work
+                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
+              <Link
+                href="/contact"
+                className="group flex items-center bg-transparent hover:bg-white/10 text-white border border-white/20 px-6 py-3 rounded-full transition-all"
+              >
+                Contact Me
+              </Link>
+            </div>
           </div>
         </div>
       </div>
@@ -53,7 +74,10 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-4 md:mb-0">
-              <p className="text-gray-500 text-sm">&copy; {new Date().getFullYear()} John Doe. All rights reserved.</p>
+              <p className="text-gray-500 text-sm">
+                &copy; {new Date().getFullYear()} Axel Charlassier. All rights
+                reserved.
+              </p>
             </div>
 
             <div className="flex space-x-6">
@@ -130,6 +154,5 @@ export default function Home() {
         </div>
       </footer>
     </div>
-  )
+  );
 }
-

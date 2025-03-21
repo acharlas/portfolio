@@ -1,55 +1,64 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { Send } from "lucide-react"
+import { useState } from "react";
+import { Send } from "lucide-react";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     message: "",
-  })
+  });
 
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitStatus, setSubmitStatus] = useState<null | "success" | "error">(null)
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<null | "success" | "error">(
+    null
+  );
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
-  }
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
+    e.preventDefault();
+    setIsSubmitting(true);
 
     try {
       // This would be replaced with your actual form submission logic
       // For example, using a server action or API route
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
       // Simulate successful submission
-      setSubmitStatus("success")
-      setFormData({ name: "", email: "", message: "" })
-    } catch (error) {
-      setSubmitStatus("error")
+      setSubmitStatus("success");
+      setFormData({ name: "", email: "", message: "" });
+    } catch {
+      setSubmitStatus("error");
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   return (
     <div className="flex flex-col items-center">
       <div className="w-full max-w-6xl">
         <div className="blue-divider w-full mb-16"></div>
 
-        <h1 className="text-4xl md:text-5xl font-bold text-gray-300 mb-8">Contact</h1>
+        <h1 className="text-4xl md:text-5xl font-bold text-gray-300 mb-8">
+          Contact
+        </h1>
 
         <div className="max-w-xl mx-auto">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-400 mb-1">
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium text-gray-400 mb-1"
+              >
                 Name
               </label>
               <input
@@ -64,7 +73,10 @@ export default function ContactPage() {
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-400 mb-1">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-400 mb-1"
+              >
                 Email
               </label>
               <input
@@ -79,7 +91,10 @@ export default function ContactPage() {
             </div>
 
             <div>
-              <label htmlFor="message" className="block text-sm font-medium text-gray-400 mb-1">
+              <label
+                htmlFor="message"
+                className="block text-sm font-medium text-gray-400 mb-1"
+              >
                 Message
               </label>
               <textarea
@@ -110,12 +125,15 @@ export default function ContactPage() {
 
             {submitStatus === "success" && (
               <p className="text-green-400 text-sm mt-2">
-                Your message has been sent successfully! I'll get back to you soon.
+                Your message has been sent successfully! I&apos;ll get back to
+                you soon.
               </p>
             )}
 
             {submitStatus === "error" && (
-              <p className="text-red-400 text-sm mt-2">There was an error sending your message. Please try again.</p>
+              <p className="text-red-400 text-sm mt-2">
+                There was an error sending your message. Please try again.
+              </p>
             )}
           </form>
         </div>
@@ -126,7 +144,10 @@ export default function ContactPage() {
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-4 md:mb-0">
-              <p className="text-gray-500 text-sm">&copy; {new Date().getFullYear()} John Doe. All rights reserved.</p>
+              <p className="text-gray-500 text-sm">
+                &copy; {new Date().getFullYear()} Axel Charlassier. All rights
+                reserved.
+              </p>
             </div>
 
             <div className="flex space-x-6">
@@ -203,6 +224,5 @@ export default function ContactPage() {
         </div>
       </footer>
     </div>
-  )
+  );
 }
-
