@@ -20,8 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.className}  min-h-screen flex flex-col bg-cover bg-center bg-fixed`}
-        style={{ backgroundImage: "url('/background.jpg')" }}
+        className={`${inter.className}  min-h-screen flex flex-col bg-cover bg-center bg-fixed bg-[url(/mountains-bg.jpg)]`}
       >
         <div className="container mx-auto px-4 flex-grow">
           <Header />
