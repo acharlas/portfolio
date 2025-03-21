@@ -25,7 +25,7 @@ export default function Home() {
             {/* Heading */}
             <h1
               className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold bg-clip-text text-transparent text-center mb-6
-              bg-[linear-gradient(to_right,#061A2B_0%,white_25%,white_90%,#061A2B_100%)] "
+              bg-[linear-gradient(to_right,#08233B_0%,#f6f6f6_25%,#f6f6f6_90%,#08233B_100%)] "
             >
               Hi, I&apos;m Axel
             </h1>
