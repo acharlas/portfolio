@@ -52,10 +52,15 @@ function ResumeDropdown() {
       <DropdownMenuTrigger className="flex items-center text-sm font-medium text-white/80 hover:text-[#00a2ff] transition-colors focus:outline-none">
         Resume <ChevronDown className="ml-1 h-4 w-4" />
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-48">
+      <DropdownMenuContent
+        align="end"
+        className="bg-black"
+        side="bottom"
+        sideOffset={30}
+      >
         <DropdownMenuItem asChild>
           <a
-            href="https://drive.google.com/your-english-resume-link"
+            href="https://drive.google.com/file/d/1DXmWEk-c-Eg7olLezuHYqHxux81EtMnv/view?usp=sharing"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center cursor-pointer"
@@ -66,7 +71,7 @@ function ResumeDropdown() {
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <a
-            href="https://drive.google.com/your-french-resume-link"
+            href="https://drive.google.com/file/d/10oiywqBbYafwiNFCfU2qEg4RRSVYP3LB/view?usp=sharing"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center cursor-pointer"

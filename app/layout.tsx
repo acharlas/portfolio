@@ -23,8 +23,9 @@ export default function RootLayout({
         className={`${inter.className}  min-h-screen flex flex-col bg-cover bg-center bg-fixed bg-[url(../public/mountains-bg.jpg)]`}
       >
         <div className="container mx-auto px-4 flex-grow">
-          <Header />
           <ParticleBackground />
+          <Header />
+
           <main className="flex-grow">{children}</main>
         </div>
       </body>

@@ -23,9 +23,14 @@ export default function Home() {
           {/* Main content - moved higher */}
           <div className="flex flex-col items-center mt-[-10vh]">
             {/* Heading */}
-            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-gray-300 text-center mb-6">
+            <h1
+              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold bg-clip-text text-transparent text-center mb-6
+              bg-[linear-gradient(to_right,#061A2B_0%,white_25%,white_90%,#061A2B_100%)] "
+            >
               Hi, I&apos;m Axel
             </h1>
+
+            {/* #061A2B */}
 
             {/* Subtitle */}
             <p className="text-xl md:text-2xl text-gray-500 mb-12">
