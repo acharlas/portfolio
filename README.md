@@ -1,36 +1,97 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+[![Next][Next.js]][Next-url] [![Tailwind][Tailwind]][Tailwind-url] [![Jest][Jest.js]][Jest-url] ![build]
 
-## Getting Started
 
-First, run the development server:
+# Portfolio
 
-```bash
+* This repository contains the source code for my portfolio website—built with Next.js, TypeScript, and Tailwind CSS. It’s designed as a straightforward, modern, and responsive showcase of my work and projects, leveraging server-side rendering for enhanced performance and strict type safety for improved code quality. 
+* Additionally, the site is carefully deployed using a robust CI/CD pipeline with GitHub Actions that runs tests to ensure reliability throughout the deployment process.
+
+
+## Features
+
+- **Modern UI:** Built with Next.js and styled with Tailwind CSS.
+- **Responsive Design:** Optimized for all devices—desktop, tablet, and mobile.
+- **Customizable Content:** Easily update and modify the portfolio by editing files in the `app` and `components` directories.
+- **Type Safety:** Written in TypeScript for a more robust development experience.
+
+## Technologies
+
+- [Next.js](https://nextjs.org/) – Framework for building React applications with server-side rendering.
+- [TypeScript](https://www.typescriptlang.org/) – A typed superset of JavaScript that compiles to plain JavaScript.
+- [Tailwind CSS](https://tailwindcss.com/) – Utility-first CSS framework for rapid UI development.
+
+## CI/CD Deployment
+
+The portfolio is deployed using a GitHub Actions workflow named **"CI/CD for Portfolio"**. This automated pipeline is configured to trigger on:
+- Pushes to the `main` and `dev` branches,
+- Pull requests targeting `main`,
+- Manual triggers (workflow_dispatch), and
+- A weekly schedule (every Sunday at midnight).
+
+The workflow performs the following steps:
+- **Build & Test:** It checks out the code, detects the package manager, sets up Node.js, caches dependencies, runs lint checks and dependency audits, and executes tests with coverage.
+- **Build Process:** It builds the project using Next.js.
+- **Code Analysis:** It runs CodeQL analysis to ensure code quality.
+- **Deployment:** After a successful build and analysis, the site is deployed to GitHub Pages.
+
+This setup ensures that every change is thoroughly tested and safely deployed with minimal manual intervention.
+
+## Running the Development Server
+
+Start the development server with:
+
+```
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open [http://localhost:3000](http://localhost:3000) in your browser to see the site in action.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Building for Production
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+To build the project for production:
 
-## Learn More
+```
+npm run build
+```
 
-To learn more about Next.js, take a look at the following resources:
+Once built, you can run the production server with:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+npm run start
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Visit the Website
 
-## Deploy on Vercel
+This portfolio is hosted online. Simply visit my [Portfolio](https://acharlas.github.io/portfolio/) to see it in action.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Docker
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project includes a Dockerfile for containerized deployment. To build and run the application using Docker, use the following commands:
+
+```
+docker-compose up --build
+```
+
+This setup ensures the portfolio runs in a consistent, isolated environment.
+
+## Contributing
+
+This repository is primarily for my personal use, so contributions aren’t expected. However, if you spot a bug or have a suggestion that improves the project’s quality, feel free to open an issue or submit a pull request. The truth is, the code works because it’s written to be clear and functional.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+No unnecessary embellishments—just a functional, modern portfolio that gets the job done.
+
+
+[Tailwind]: https://img.shields.io/badge/Tailwind_CSS-grey?style=for-the-badge&logo=tailwind-css&logoColor=38B2AC
+[Tailwind-url]: https://tailwindcss.com/
+[Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
+[Next-url]: https://nextjs.org/t
+[Jest.js]: https://img.shields.io/badge/Jest-323330?style=for-the-badge&logo=Jest&logoColor=white
+[jest-url]: https://jestjs.io/
+[build]: https://img.shields.io/github/actions/workflow/status/acharlas/portfolio/deploy.yml
+
