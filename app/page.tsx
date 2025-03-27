@@ -19,14 +19,11 @@ export default function Home() {
       <div className="w-full max-w-6xl">
         <div className="blue-divider w-full"></div>
 
-        <div className="flex flex-col items-center justify-center min-h-[80vh]">
+        <div className="flex flex-col items-center justify-center min-h-[85vh]">
           {/* Main content - moved higher */}
           <div className="flex flex-col items-center mt-[-10vh]">
             {/* Heading */}
-            <h1
-              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold bg-clip-text text-transparent text-center mb-6
-              bg-[linear-gradient(to_right,#08233B_0%,#f6f6f6_25%,#f6f6f6_90%,#08233B_100%)] "
-            >
+            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-[#E3DAC9] text-center mb-6">
               Hi, I&apos;m Axel
             </h1>
 
@@ -87,7 +84,7 @@ export default function Home() {
 
             <div className="flex space-x-6">
               <a
-                href="https://github.com/yourusername"
+                href="https://github.com/acharlas"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-500 hover:text-[#00a2ff] transition-colors"
@@ -110,7 +107,7 @@ export default function Home() {
                 </svg>
               </a>
               <a
-                href="https://linkedin.com/in/yourusername"
+                href="https://www.linkedin.com/in/axel-charlassier-a475a8201/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-500 hover:text-[#00a2ff] transition-colors"
@@ -134,7 +131,7 @@ export default function Home() {
                 </svg>
               </a>
               <a
-                href="mailto:your.email@example.com"
+                href="mailto:axel.charlassier@gmail.com"
                 className="text-gray-500 hover:text-[#00a2ff] transition-colors"
                 aria-label="Email"
               >
