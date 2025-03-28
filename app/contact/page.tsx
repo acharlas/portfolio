@@ -15,6 +15,7 @@ export default function ContactPage() {
   const [submitStatus, setSubmitStatus] = useState<null | "success" | "error">(
     null
   );
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -26,17 +27,32 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitStatus(null);
+    setErrorMessage("");
 
     try {
-      // This would be replaced with your actual form submission logic
-      // For example, using a server action or API route
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
-      // Simulate successful submission
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Something went wrong");
+      }
+
+      // Success
       setSubmitStatus("success");
       setFormData({ name: "", email: "", message: "" });
-    } catch {
+    } catch (error) {
       setSubmitStatus("error");
+      setErrorMessage(
+        error instanceof Error ? error.message : "Failed to send message"
+      );
     } finally {
       setIsSubmitting(false);
     }

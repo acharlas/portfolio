@@ -12,3 +12,4 @@ services:
     environment:
       - CHOKIDAR_USEPOLLING=true
       - WDS_SOCKET_PORT=0
+    env_file: ".env.local"
