@@ -11,11 +11,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+const basePath = process.env.NODE_ENV === "production" ? "/portfolio" : "";
+
 export default function Header() {
   const pathname = usePathname();
 
   const links = [
-    { href: "/", label: "About Me" },
+    { href: "/", label: "Home" },
     { href: "/projects", label: "Projects" },
     { href: "/contact", label: "Contact" },
   ];
@@ -28,6 +30,7 @@ export default function Header() {
             <li key={link.href}>
               <Link
                 href={link.href}
+                as={`${basePath}${link.href}`} // Explicit "as" for absolute safety
                 className={cn(
                   "text-sm font-medium transition-colors hover:text-[#00a2ff]",
                   pathname === link.href ? "text-[#00a2ff]" : "text-white/80"
