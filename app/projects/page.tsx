@@ -1,48 +1,51 @@
+"use client";
+
+import type React from "react";
+
 import Image from "next/image";
-import { ExternalLink, Github } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 
 // This would typically come from a database or CMS
-// For easy modification, you could use a JSON file or a database
 const projects = [
   {
     id: 1,
-    title: "Project One",
+    title: "Chaos Equations Simulation",
     description:
-      "A description of your first project. This could be a web application, mobile app, or any other type of project you've worked on.",
-    technologies: ["React", "Next.js", "Tailwind CSS"],
-    image: "/placeholder.svg?height=300&width=600",
-    githubUrl: "https://github.com/yourusername/project-one",
-    liveUrl: "https://project-one.example.com",
+      "A simulation of chaotic attractors using React Three Fiber and Leva controls. Features modular components for Halvorsen and Lorenz attractors, with a particle system displaying smooth color gradient trails.",
+    technologies: ["React", "React Three Fiber", "Leva", "React Three drei"],
+    image: "/projects/chaos-equation-screenshot.png",
+    githubUrl: "https://github.com/acharlas/Chaos-Equations",
+    liveUrl: "https://acharlas.github.io/Chaos-Equations/",
   },
   {
     id: 2,
-    title: "Project Two",
+    title: "Transcendence",
     description:
-      "A description of your second project. Highlight the problem it solves and your role in developing it.",
-    technologies: ["TypeScript", "Node.js", "MongoDB"],
-    image: "/placeholder.svg?height=300&width=600",
-    githubUrl: "https://github.com/yourusername/project-two",
-    liveUrl: "https://project-two.example.com",
+      "A full-stack web application of the classic Pong game, developed as part of the 42 school curriculum. Includes user authentication, real-time gameplay, and a leaderboard.",
+    technologies: ["React", "NestJS", "PostgreSQL", "Docker"],
+    image: "/projects/transcendence-screenshot.png",
+    githubUrl: "https://github.com/acharlas/42-transcendence",
+    liveUrl: "",
   },
   {
     id: 3,
-    title: "Project Three",
+    title: "Vulkan Engine",
     description:
-      "A description of your third project. Mention any challenges you faced and how you overcame them.",
-    technologies: ["Vue.js", "Firebase", "SCSS"],
-    image: "/placeholder.svg?height=300&width=600",
-    githubUrl: "https://github.com/yourusername/project-three",
-    liveUrl: "https://project-three.example.com",
+      "A custom rendering engine built with Vulkan and GLFW, demonstrating the setup of a Vulkan environment from window initialization to rendering a simple scene.",
+    technologies: ["C++", "Vulkan", "GLFW", "GLSL"],
+    image: "/projects/vulkanengine-water-screenshot.png",
+    githubUrl: "https://github.com/acharlas/vulkan-engine",
+    liveUrl: "",
   },
   {
     id: 4,
-    title: "Project Four",
+    title: "Battlemage Mod for Baldur's Gate 3",
     description:
-      "A description of your fourth project. Talk about the impact it had or the problem it solved.",
-    technologies: ["React Native", "Redux", "Express"],
-    image: "/placeholder.svg?height=300&width=600",
-    githubUrl: "https://github.com/yourusername/project-four",
-    liveUrl: "https://project-four.example.com",
+      "A mod for Baldur's Gate 3 built using the Divinity Engine, integrating LUA scripting for dynamic interactions and gameplay adjustments.",
+    technologies: ["Divinity Engine", "LUA", "Game Modding"],
+    image: "/projects/battlemage-screenshot.png",
+    githubUrl: "",
+    liveUrl: "https://mod.io/g/baldursgate3/m/battlemage",
   },
 ];
 
@@ -52,11 +55,11 @@ export default function ProjectsPage() {
       <div className="w-full max-w-6xl">
         <div className="blue-divider w-full mb-16"></div>
 
-        <h1 className="text-4xl md:text-5xl font-bold text-gray-300 mb-8">
+        <h1 className="text-4xl md:text-5xl font-bold text-gray-300 mb-12">
           Projects
         </h1>
 
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-2 mb-16">
           {projects.map((project) => (
             <ProjectCard key={project.id} project={project} />
           ))}
@@ -67,58 +70,67 @@ export default function ProjectsPage() {
 }
 
 function ProjectCard({ project }: { project: (typeof projects)[0] }) {
+  // Determine the main link URL (GitHub or live URL if GitHub not available)
+  const mainLinkUrl = project.githubUrl || project.liveUrl;
+
+  const handleCardClick = () => {
+    // Open the main link in a new tab
+    window.open(mainLinkUrl, "_blank", "noopener,noreferrer");
+  };
+
+  const handleLiveDemoClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent the card click
+    window.open(project.liveUrl, "_blank", "noopener,noreferrer");
+  };
+
   return (
-    <div className="bg-gray-900 rounded-lg overflow-hidden border border-gray-800 hover:border-[#00a2ff]/30 transition-all">
-      <div className="relative h-48">
+    <div
+      onClick={handleCardClick}
+      className="bg-gray-900/80 rounded-lg overflow-hidden border border-gray-800 hover:border-gray-700 hover:bg-gray-800/90 transition-all flex flex-col cursor-pointer group"
+    >
+      {/* Project Image with 16:9 aspect ratio */}
+      <div className="relative w-full aspect-video">
         <Image
-          src={project.image || "/placeholder.svg"}
+          src={project.image || "/placeholder.svg?height=900&width=1600"}
           alt={`Screenshot of ${project.title}`}
           fill
           className="object-cover"
         />
       </div>
 
-      <div className="p-6">
-        <h2 className="text-xl font-bold mb-2">{project.title}</h2>
+      {/* Project Content */}
+      <div className="p-5 flex-grow flex flex-col">
+        {/* Title */}
+        <h2 className="text-xl font-bold mb-2 text-white">{project.title}</h2>
 
-        <p className="text-gray-400 mb-4">{project.description}</p>
-
-        <div className="mb-4 flex flex-wrap gap-2">
+        {/* Technologies */}
+        <div className="mb-3 flex flex-wrap gap-1.5">
           {project.technologies.map((tech) => (
             <span
               key={tech}
-              className="text-xs bg-black/50 text-[#00a2ff] px-2 py-1 rounded-full"
+              className="text-xs bg-black/50 text-[#00a2ff]/80 px-2 py-0.5 rounded-full"
             >
               {tech}
             </span>
           ))}
         </div>
 
-        <div className="flex gap-4">
-          {project.githubUrl && (
-            <a
-              href={project.githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center text-gray-400 hover:text-[#00a2ff] transition-colors"
-              aria-label={`View ${project.title} source code on GitHub`}
-            >
-              <Github className="mr-1 h-4 w-4" />
-              Source
-            </a>
-          )}
+        {/* Description */}
+        <p className="text-gray-400 text-sm mb-4 flex-grow">
+          {project.description}
+        </p>
 
+        {/* Links */}
+        <div className="flex gap-4 mt-auto">
           {project.liveUrl && (
-            <a
-              href={project.liveUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center text-gray-400 hover:text-[#00a2ff] transition-colors"
+            <button
+              onClick={handleLiveDemoClick}
+              className="inline-flex items-center text-gray-400 hover:text-[#00a2ff]/80 transition-colors text-xs bg-transparent border-0 p-0 cursor-pointer"
               aria-label={`View live demo of ${project.title}`}
             >
-              <ExternalLink className="mr-1 h-4 w-4" />
+              <ExternalLink className="mr-1 h-3.5 w-3.5" />
               Live Demo
-            </a>
+            </button>
           )}
         </div>
       </div>

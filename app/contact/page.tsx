@@ -26,13 +26,27 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitStatus(null);
 
     try {
-      // This would be replaced with your actual form submission logic
-      // For example, using a server action or API route
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const response = await fetch(
+        "https://portfolio-backend-three-umber.vercel.app/api/send-email",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
-      // Simulate successful submission
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Something went wrong");
+      }
+
+      // Success
       setSubmitStatus("success");
       setFormData({ name: "", email: "", message: "" });
     } catch {
