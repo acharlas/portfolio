@@ -40,10 +40,15 @@ export default function ContactPage() {
         }
       );
 
-      const data = await response.json();
+      let data = null;
+
+      const contentType = response.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        data = await response.json();
+      }
 
       if (!response.ok) {
-        throw new Error(data.error || "Something went wrong");
+        throw new Error(data?.error || "Something went wrong");
       }
 
       // Success
