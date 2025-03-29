@@ -15,7 +15,6 @@ export default function ContactPage() {
   const [submitStatus, setSubmitStatus] = useState<null | "success" | "error">(
     null
   );
-  const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -28,16 +27,18 @@ export default function ContactPage() {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitStatus(null);
-    setErrorMessage("");
 
     try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        "https://portfolio-backend-three-umber.vercel.app/api/send-email",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
       const data = await response.json();
 
@@ -48,11 +49,8 @@ export default function ContactPage() {
       // Success
       setSubmitStatus("success");
       setFormData({ name: "", email: "", message: "" });
-    } catch (error) {
+    } catch {
       setSubmitStatus("error");
-      setErrorMessage(
-        error instanceof Error ? error.message : "Failed to send message"
-      );
     } finally {
       setIsSubmitting(false);
     }
