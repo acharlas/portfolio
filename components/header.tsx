@@ -15,7 +15,7 @@ export default function Header() {
   const pathname = usePathname();
 
   const links = [
-    { href: "/", label: "About Me" },
+    { href: "/", label: "Home" },
     { href: "/projects", label: "Projects" },
     { href: "/contact", label: "Contact" },
   ];
