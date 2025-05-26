@@ -14,7 +14,7 @@ interface Particle {
 export default function ParticleBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particles = useRef<Particle[]>([]);
-  const animationFrameId = useRef<number>();
+  const animationFrameId = useRef<number | undefined>(undefined);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -104,7 +104,7 @@ export default function ParticleBackground() {
     // Cleanup
     return () => {
       window.removeEventListener("resize", handleResize);
-      if (animationFrameId.current) {
+      if (animationFrameId.current !== undefined) {
         cancelAnimationFrame(animationFrameId.current);
       }
     };
