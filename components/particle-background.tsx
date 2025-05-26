@@ -35,6 +35,8 @@ export default function ParticleBackground() {
 
     // Initialize particles
     function initParticles() {
+      if (!canvas) return;
+
       particles.current = [];
       const particleCount = Math.min(Math.floor(window.innerWidth / 5), 200); // Responsive particle count
 

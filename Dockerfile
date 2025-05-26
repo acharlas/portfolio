@@ -1,11 +1,10 @@
 # Dockerfile
  
 # Use an existing node alpine image as a base image.
-FROM node:22.10.0-alpine
+FROM node:23-alpine
 
 # Set the working directory.
 WORKDIR /app
- 
 # Copy the package.json file.
 COPY package.json .
  
