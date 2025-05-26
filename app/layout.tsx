@@ -37,7 +37,7 @@ export default function RootLayout({
       </head>
       <body className={`${inter.className} min-h-screen flex flex-col`}>
         <ImagePreloader src="/mountains-bg.jpg">
-          <div className="min-h-screen flex flex-col bg-cover bg-center bg-fixed bg-[url(../public/mountains-bg.jpg)] transition-all duration-300">
+          <div className="min-h-screen flex flex-col bg-black bg-[url(/mountains-bg.jpg)] bg-cover bg-center bg-fixed">
             <div className="container mx-auto px-4 flex-grow">
               <ParticleBackground />
               <Header />

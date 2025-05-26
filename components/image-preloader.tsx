@@ -8,27 +8,36 @@ interface ImagePreloaderProps {
   fallback?: React.ReactNode;
 }
 
+// Global cache to persist across page navigations
+const imageCache = new Set<string>();
+
 export default function ImagePreloader({
   src,
   children,
   fallback,
 }: ImagePreloaderProps) {
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(() => imageCache.has(src));
 
   useEffect(() => {
+    if (imageCache.has(src)) {
+      setIsLoaded(true);
+      return;
+    }
+
     const img = new Image();
 
     img.onload = () => {
+      imageCache.add(src);
       setIsLoaded(true);
     };
 
     img.onerror = () => {
-      setIsLoaded(true); // Still show content even if image fails
+      imageCache.add(src); // Cache even failed loads to avoid retry loops
+      setIsLoaded(true);
     };
 
     img.src = src;
 
-    // Cleanup
     return () => {
       img.onload = null;
       img.onerror = null;
@@ -48,13 +57,5 @@ export default function ImagePreloader({
     );
   }
 
-  return (
-    <div
-      className={`transition-opacity duration-500 ${
-        isLoaded ? "opacity-100" : "opacity-0"
-      }`}
-    >
-      {children}
-    </div>
-  );
+  return <>{children}</>;
 }
