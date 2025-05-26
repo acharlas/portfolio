@@ -30,14 +30,14 @@ export default function RootLayout({
       <head>
         <link
           rel="preload"
-          href="/mountains-bg.jpg"
+          href="/portfolio/mountains-bg.jpg"
           as="image"
           type="image/jpeg"
         />
       </head>
       <body className={`${inter.className} min-h-screen flex flex-col`}>
-        <ImagePreloader src="/mountains-bg.jpg">
-          <div className="min-h-screen flex flex-col bg-black bg-[url(/mountains-bg.jpg)] bg-cover bg-center bg-fixed">
+        <ImagePreloader src="/portfolio/mountains-bg.jpg">
+          <div className="min-h-screen flex flex-col bg-black bg-[url(/portfolio/mountains-bg.jpg)] bg-cover bg-center bg-fixed">
             <div className="container mx-auto px-4 flex-grow">
               <ParticleBackground />
               <Header />
