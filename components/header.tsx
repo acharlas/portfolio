@@ -11,13 +11,17 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export default function Header() {
+interface HeaderProps {
+  basePath: string;
+}
+
+export default function Header({ basePath }: HeaderProps) {
   const pathname = usePathname();
 
   const links = [
-    { href: "/", label: "Home" },
-    { href: "/projects", label: "Projects" },
-    { href: "/contact", label: "Contact" },
+    { href: basePath || "/", label: "Home" },
+    { href: `${basePath}/projects`, label: "Projects" },
+    { href: `${basePath}/contact`, label: "Contact" },
   ];
 
   return (

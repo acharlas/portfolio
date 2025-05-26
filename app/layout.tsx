@@ -8,6 +8,8 @@ import ImagePreloader from "@/components/image-preloader";
 
 const inter = Inter({ subsets: ["latin"] });
 
+const basePath = process.env.NODE_ENV === "production" ? "/portfolio" : "";
+
 export const metadata: Metadata = {
   title: "Axel Charlassier | Portfolio",
   description: "Full-Stack Web Developer Portfolio",
@@ -30,17 +32,17 @@ export default function RootLayout({
       <head>
         <link
           rel="preload"
-          href="/portfolio/mountains-bg.jpg"
+          href={`${basePath}/mountains-bg.jpg`}
           as="image"
           type="image/jpeg"
         />
       </head>
       <body className={`${inter.className} min-h-screen flex flex-col`}>
-        <ImagePreloader src="/portfolio/mountains-bg.jpg">
+        <ImagePreloader src={`${basePath}/mountains-bg.jpg`}>
           <div className="min-h-screen flex flex-col">
             <div className="container mx-auto px-4 flex-grow">
               <ParticleBackground />
-              <Header />
+              <Header basePath={basePath} />
               <main className="flex-grow">{children}</main>
             </div>
 
