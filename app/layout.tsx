@@ -19,6 +19,12 @@ export const viewport = {
   initialScale: 1,
 };
 
+// Helper function to get correct asset path
+const getBackgroundImage = () => {
+  const basePath = process.env.NODE_ENV === "production" ? "/portfolio" : "";
+  return `url(${basePath}/mountains-bg.jpg)`;
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -27,7 +33,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.className} min-h-screen flex flex-col bg-cover bg-center bg-fixed bg-[url(/portfolio/mountains-bg.jpg)]`}
+        className={`${inter.className} min-h-screen flex flex-col bg-cover bg-center bg-fixed`}
+        style={{ backgroundImage: getBackgroundImage() }}
       >
         <div className="container mx-auto px-4 flex-grow">
           <ParticleBackground />

@@ -16,6 +16,12 @@ interface FormErrors {
   message?: string;
 }
 
+// Configuration
+const API_ENDPOINT =
+  process.env.NEXT_PUBLIC_API_ENDPOINT ||
+  "https://portfolio-backend-three-umber.vercel.app/api/send-email";
+const MOBILE_BREAKPOINT = 768;
+
 export default function ContactPage() {
   const [formData, setFormData] = useState<FormData>({
     name: "",
@@ -30,11 +36,9 @@ export default function ContactPage() {
   const [errors, setErrors] = useState<FormErrors>({});
   const [isMobile, setIsMobile] = useState(false);
 
-  // Check if we're on a mobile device
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
+    const checkMobile = () =>
+      setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
 
     checkMobile();
     window.addEventListener("resize", checkMobile);
@@ -44,14 +48,12 @@ export default function ContactPage() {
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
 
-    // Name validation
     if (!formData.name.trim()) {
       newErrors.name = "Name is required";
     } else if (formData.name.trim().length < 2) {
       newErrors.name = "Name must be at least 2 characters";
     }
 
-    // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formData.email.trim()) {
       newErrors.email = "Email is required";
@@ -59,7 +61,6 @@ export default function ContactPage() {
       newErrors.email = "Please enter a valid email address";
     }
 
-    // Message validation
     if (!formData.message.trim()) {
       newErrors.message = "Message is required";
     } else if (formData.message.trim().length < 10) {
@@ -76,7 +77,6 @@ export default function ContactPage() {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
 
-    // Clear error when user starts typing
     if (errors[name as keyof FormErrors]) {
       setErrors((prev) => ({ ...prev, [name]: undefined }));
     }
@@ -85,28 +85,21 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!validateForm()) {
-      return;
-    }
+    if (!validateForm()) return;
 
     setIsSubmitting(true);
     setSubmitStatus(null);
 
     try {
-      const response = await fetch(
-        "https://portfolio-backend-three-umber.vercel.app/api/send-email",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: formData.name.trim(),
-            email: formData.email.trim().toLowerCase(),
-            message: formData.message.trim(),
-          }),
-        }
-      );
+      const response = await fetch(API_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name.trim(),
+          email: formData.email.trim().toLowerCase(),
+          message: formData.message.trim(),
+        }),
+      });
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -136,37 +129,19 @@ export default function ContactPage() {
           <div className="hidden md:block space-y-8 order-1">
             <p className="text-gray-400 mb-4">Feel free to contact me!</p>
 
-            {/* Email Block */}
-            <div className="bg-gray-900/60 border border-gray-800/80 rounded-xl p-4 hover:border-[#00a2ff]/30 transition-all w-5/6">
-              <div className="flex items-start">
-                <div className="bg-[#00a2ff]/10 p-2 rounded-full mr-3">
-                  <Mail className="h-5 w-5 text-[#00a2ff]" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-medium mb-1">Email</h3>
-                  <a
-                    href="mailto:axel.charlassier@gmail.com"
-                    className="text-gray-400 hover:text-[#00a2ff] flex items-center transition-colors"
-                  >
-                    axel.charlassier@gmail.com
-                    <ExternalLink className="ml-2 h-4 w-4" />
-                  </a>
-                </div>
-              </div>
-            </div>
+            <ContactInfoCard
+              icon={<Mail className="h-5 w-5 text-[#00a2ff]" />}
+              title="Email"
+              href="mailto:axel.charlassier@gmail.com"
+              text="axel.charlassier@gmail.com"
+              isExternal
+            />
 
-            {/* Location Block */}
-            <div className="bg-gray-900/60 border border-gray-800/80 rounded-xl p-4 hover:border-[#00a2ff]/30 transition-all w-5/6">
-              <div className="flex items-center">
-                <div className="bg-[#00a2ff]/10 p-2 rounded-full mr-3">
-                  <MapPin className="h-5 w-5 text-[#00a2ff]" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-medium mb-1">Location</h3>
-                  <p className="text-gray-400">Paris, France</p>
-                </div>
-              </div>
-            </div>
+            <ContactInfoCard
+              icon={<MapPin className="h-5 w-5 text-[#00a2ff]" />}
+              title="Location"
+              text="Paris, France"
+            />
           </div>
 
           {/* Contact Form */}
@@ -174,94 +149,36 @@ export default function ContactPage() {
             <h2 className="text-2xl font-bold mb-6">Send Me a Message</h2>
 
             <form onSubmit={handleSubmit} className="space-y-6" noValidate>
-              <div>
-                <label
-                  htmlFor="name"
-                  className="block text-sm font-medium text-gray-300 mb-2"
-                >
-                  Name *
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                  aria-invalid={!!errors.name}
-                  aria-describedby={errors.name ? "name-error" : undefined}
-                  className={`w-full px-4 py-3 bg-gray-800/80 border rounded-md focus:outline-none focus:ring-2 transition-colors ${
-                    errors.name
-                      ? "border-red-500 focus:ring-red-500"
-                      : "border-gray-700/80 focus:ring-[#00a2ff]"
-                  }`}
-                />
-                {errors.name && (
-                  <p id="name-error" className="text-red-400 text-sm mt-1">
-                    {errors.name}
-                  </p>
-                )}
-              </div>
+              <FormField
+                id="name"
+                label="Name *"
+                type="text"
+                value={formData.name}
+                onChange={handleChange}
+                error={errors.name}
+                required
+              />
 
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-gray-300 mb-2"
-                >
-                  Email *
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  aria-invalid={!!errors.email}
-                  aria-describedby={errors.email ? "email-error" : undefined}
-                  className={`w-full px-4 py-3 bg-gray-800/80 border rounded-md focus:outline-none focus:ring-2 transition-colors ${
-                    errors.email
-                      ? "border-red-500 focus:ring-red-500"
-                      : "border-gray-700/80 focus:ring-[#00a2ff]"
-                  }`}
-                />
-                {errors.email && (
-                  <p id="email-error" className="text-red-400 text-sm mt-1">
-                    {errors.email}
-                  </p>
-                )}
-              </div>
+              <FormField
+                id="email"
+                label="Email *"
+                type="email"
+                value={formData.email}
+                onChange={handleChange}
+                error={errors.email}
+                required
+              />
 
-              <div>
-                <label
-                  htmlFor="message"
-                  className="block text-sm font-medium text-gray-300 mb-2"
-                >
-                  Message *
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  required
-                  rows={isMobile ? 3 : 6}
-                  aria-invalid={!!errors.message}
-                  aria-describedby={
-                    errors.message ? "message-error" : undefined
-                  }
-                  className={`w-full px-4 py-3 bg-gray-800/80 border rounded-md focus:outline-none focus:ring-2 transition-colors resize-vertical ${
-                    errors.message
-                      ? "border-red-500 focus:ring-red-500"
-                      : "border-gray-700/80 focus:ring-[#00a2ff]"
-                  } ${isMobile ? "min-h-[80px]" : "min-h-[150px]"}`}
-                />
-                {errors.message && (
-                  <p id="message-error" className="text-red-400 text-sm mt-1">
-                    {errors.message}
-                  </p>
-                )}
-              </div>
+              <FormField
+                id="message"
+                label="Message *"
+                type="textarea"
+                value={formData.message}
+                onChange={handleChange}
+                error={errors.message}
+                rows={isMobile ? 3 : 6}
+                required
+              />
 
               <button
                 type="submit"
@@ -281,27 +198,142 @@ export default function ContactPage() {
                 )}
               </button>
 
-              {submitStatus === "success" && (
-                <div className="p-4 bg-green-900/20 border border-green-500/20 rounded-md">
-                  <p className="text-green-400 text-sm">
-                    Your message has been sent successfully! I&apos;ll get back
-                    to you soon.
-                  </p>
-                </div>
-              )}
-
-              {submitStatus === "error" && (
-                <div className="p-4 bg-red-900/20 border border-red-500/20 rounded-md">
-                  <p className="text-red-400 text-sm">
-                    There was an error sending your message. Please try again or
-                    contact me directly.
-                  </p>
-                </div>
-              )}
+              <StatusMessage status={submitStatus} />
             </form>
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+// Helper Components
+interface ContactInfoCardProps {
+  icon: React.ReactNode;
+  title: string;
+  text: string;
+  href?: string;
+  isExternal?: boolean;
+}
+
+function ContactInfoCard({
+  icon,
+  title,
+  text,
+  href,
+  isExternal,
+}: ContactInfoCardProps) {
+  const content = (
+    <div className="bg-gray-900/60 border border-gray-800/80 rounded-xl p-4 hover:border-[#00a2ff]/30 transition-all w-5/6">
+      <div className="flex items-center">
+        <div className="bg-[#00a2ff]/10 p-2 rounded-full mr-3">{icon}</div>
+        <div>
+          <h3 className="text-lg font-medium mb-1">{title}</h3>
+          <div className="text-gray-400 hover:text-[#00a2ff] flex items-center transition-colors">
+            {text}
+            {isExternal && <ExternalLink className="ml-2 h-4 w-4" />}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  return href ? <a href={href}>{content}</a> : content;
+}
+
+interface FormFieldProps {
+  id: string;
+  label: string;
+  type: string;
+  value: string;
+  onChange: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
+  error?: string;
+  rows?: number;
+  required?: boolean;
+}
+
+function FormField({
+  id,
+  label,
+  type,
+  value,
+  onChange,
+  error,
+  rows,
+  required,
+}: FormFieldProps) {
+  const baseClasses = `w-full px-4 py-3 bg-gray-800/80 border rounded-md focus:outline-none focus:ring-2 transition-colors ${
+    error
+      ? "border-red-500 focus:ring-red-500"
+      : "border-gray-700/80 focus:ring-[#00a2ff]"
+  }`;
+
+  return (
+    <div>
+      <label
+        htmlFor={id}
+        className="block text-sm font-medium text-gray-300 mb-2"
+      >
+        {label}
+      </label>
+      {type === "textarea" ? (
+        <textarea
+          id={id}
+          name={id}
+          value={value}
+          onChange={onChange}
+          required={required}
+          rows={rows}
+          aria-invalid={!!error}
+          aria-describedby={error ? `${id}-error` : undefined}
+          className={`${baseClasses} resize-vertical min-h-[${
+            rows && rows < 4 ? "80px" : "150px"
+          }]`}
+        />
+      ) : (
+        <input
+          type={type}
+          id={id}
+          name={id}
+          value={value}
+          onChange={onChange}
+          required={required}
+          aria-invalid={!!error}
+          aria-describedby={error ? `${id}-error` : undefined}
+          className={baseClasses}
+        />
+      )}
+      {error && (
+        <p id={`${id}-error`} className="text-red-400 text-sm mt-1">
+          {error}
+        </p>
+      )}
+    </div>
+  );
+}
+
+function StatusMessage({ status }: { status: "success" | "error" | null }) {
+  if (!status) return null;
+
+  return (
+    <div
+      className={`p-4 border rounded-md ${
+        status === "success"
+          ? "bg-green-900/20 border-green-500/20"
+          : "bg-red-900/20 border-red-500/20"
+      }`}
+    >
+      <p
+        className={`text-sm ${
+          status === "success" ? "text-green-400" : "text-red-400"
+        }`}
+      >
+        {status === "success"
+          ? "Your message has been sent successfully! I'll get back to you soon."
+          : "There was an error sending your message. Please try again or contact me directly."}
+      </p>
     </div>
   );
 }
