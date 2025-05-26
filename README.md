@@ -90,7 +90,7 @@ No unnecessary embellishments—just a functional, modern portfolio that gets th
 [Tailwind]: https://img.shields.io/badge/Tailwind_CSS-grey?style=for-the-badge&logo=tailwind-css&logoColor=38B2AC
 [Tailwind-url]: https://tailwindcss.com/
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
-[Next-url]: https://nextjs.org/t
+[Next-url]: https://nextjs.org
 [Jest.js]: https://img.shields.io/badge/Jest-323330?style=for-the-badge&logo=Jest&logoColor=white
 [jest-url]: https://jestjs.io/
 [build]: https://img.shields.io/github/actions/workflow/status/acharlas/portfolio/deploy.yml

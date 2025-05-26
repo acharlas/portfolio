@@ -284,8 +284,8 @@ export default function ContactPage() {
               {submitStatus === "success" && (
                 <div className="p-4 bg-green-900/20 border border-green-500/20 rounded-md">
                   <p className="text-green-400 text-sm">
-                    Your message has been sent successfully! I'll get back to
-                    you soon.
+                    Your message has been sent successfully! I&apos;ll get back
+                    to you soon.
                   </p>
                 </div>
               )}

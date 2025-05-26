@@ -14,7 +14,6 @@ export default function ImagePreloader({
   fallback,
 }: ImagePreloaderProps) {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     const img = new Image();
@@ -24,7 +23,6 @@ export default function ImagePreloader({
     };
 
     img.onerror = () => {
-      setIsError(true);
       setIsLoaded(true); // Still show content even if image fails
     };
 
