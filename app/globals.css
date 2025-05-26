@@ -27,6 +27,11 @@
 
   body {
     @apply bg-black text-white font-sans;
+    background-image: url(/portfolio/mountains-bg.jpg);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
   }
 }
 

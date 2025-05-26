@@ -8,8 +8,36 @@ interface ImagePreloaderProps {
   fallback?: React.ReactNode;
 }
 
-// Global cache to persist across page navigations
-const imageCache = new Set<string>();
+// Global cache with sessionStorage persistence
+const imageCache = (() => {
+  const cache = new Set<string>();
+
+  // Load from sessionStorage on initialization
+  if (typeof window !== "undefined") {
+    try {
+      const stored = sessionStorage.getItem("imageCache");
+      if (stored) {
+        JSON.parse(stored).forEach((src: string) => cache.add(src));
+      }
+    } catch (e) {
+      // Ignore parsing errors
+    }
+  }
+
+  return {
+    has: (src: string) => cache.has(src),
+    add: (src: string) => {
+      cache.add(src);
+      if (typeof window !== "undefined") {
+        try {
+          sessionStorage.setItem("imageCache", JSON.stringify([...cache]));
+        } catch (e) {
+          // Ignore storage errors
+        }
+      }
+    },
+  };
+})();
 
 export default function ImagePreloader({
   src,
@@ -32,7 +60,7 @@ export default function ImagePreloader({
     };
 
     img.onerror = () => {
-      imageCache.add(src); // Cache even failed loads to avoid retry loops
+      imageCache.add(src);
       setIsLoaded(true);
     };
 
