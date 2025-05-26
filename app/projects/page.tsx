@@ -17,7 +17,7 @@ const projects = [
     description:
       "A simulation of chaotic attractors using React Three Fiber and Leva controls. Features modular components for Halvorsen and Lorenz attractors, with a particle system displaying smooth color gradient trails.",
     technologies: ["React", "React Three Fiber", "Leva", "React Three drei"],
-    image: getAssetPath("projects/chaos-equation-screenshot.png"),
+    image: getAssetPath("projects/chaos-equation-screenshot.webp"),
     githubUrl: "https://github.com/acharlas/Chaos-Equations",
     liveUrl: "https://acharlas.github.io/Chaos-Equations/",
   },
@@ -27,7 +27,7 @@ const projects = [
     description:
       "A full-stack web application of the classic Pong game, developed as part of the 42 school curriculum. Includes user authentication, real-time gameplay, and a leaderboard.",
     technologies: ["React", "NestJS", "PostgreSQL", "Docker"],
-    image: getAssetPath("projects/transcendence-screenshot.png"),
+    image: getAssetPath("projects/transcendence-screenshot.webp"),
     githubUrl: "https://github.com/acharlas/42-transcendence",
     liveUrl: "",
   },
@@ -37,7 +37,7 @@ const projects = [
     description:
       "A custom rendering engine built with Vulkan and GLFW, demonstrating the setup of a Vulkan environment from window initialization to rendering a simple scene.",
     technologies: ["C++", "Vulkan", "GLFW", "GLSL"],
-    image: getAssetPath("projects/vulkanengine-water-screenshot.png"),
+    image: getAssetPath("projects/vulkanengine-water-screenshot.webp"),
     githubUrl: "https://github.com/acharlas/vulkan-engine",
     liveUrl: "",
   },
@@ -47,7 +47,7 @@ const projects = [
     description:
       "A mod for Baldur's Gate 3 built using the Divinity Engine, integrating LUA scripting for dynamic interactions and gameplay adjustments.",
     technologies: ["Divinity Engine", "LUA", "Game Modding"],
-    image: getAssetPath("projects/battlemage-screenshot.png"),
+    image: getAssetPath("projects/battlemage-screenshot.webp"),
     githubUrl: "",
     liveUrl: "https://mod.io/g/baldursgate3/m/battlemage",
   },
