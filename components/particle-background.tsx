@@ -54,6 +54,8 @@ export default function ParticleBackground() {
 
     // Animation loop
     function animate() {
+      if (!ctx || !canvas) return;
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       // Update and draw particles
@@ -84,6 +86,8 @@ export default function ParticleBackground() {
 
     // Connect particles with lines if they're close enough
     function connectParticles(particle: Particle, index: number) {
+      if (!ctx) return;
+
       for (let i = index + 1; i < particles.current.length; i++) {
         const dx = particle.x - particles.current[i].x;
         const dy = particle.y - particles.current[i].y;
