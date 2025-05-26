@@ -14,7 +14,7 @@ interface Particle {
 export default function ParticleBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particles = useRef<Particle[]>([]);
-  const animationFrameId = useRef<number>();
+  const animationFrameId = useRef<number | undefined>(undefined);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -35,6 +35,8 @@ export default function ParticleBackground() {
 
     // Initialize particles
     function initParticles() {
+      if (!canvas) return;
+
       particles.current = [];
       const particleCount = Math.min(Math.floor(window.innerWidth / 5), 200); // Responsive particle count
 
@@ -52,6 +54,8 @@ export default function ParticleBackground() {
 
     // Animation loop
     function animate() {
+      if (!ctx || !canvas) return;
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       // Update and draw particles
@@ -82,6 +86,8 @@ export default function ParticleBackground() {
 
     // Connect particles with lines if they're close enough
     function connectParticles(particle: Particle, index: number) {
+      if (!ctx) return;
+
       for (let i = index + 1; i < particles.current.length; i++) {
         const dx = particle.x - particles.current[i].x;
         const dy = particle.y - particles.current[i].y;
@@ -104,7 +110,7 @@ export default function ParticleBackground() {
     // Cleanup
     return () => {
       window.removeEventListener("resize", handleResize);
-      if (animationFrameId.current) {
+      if (animationFrameId.current !== undefined) {
         cancelAnimationFrame(animationFrameId.current);
       }
     };

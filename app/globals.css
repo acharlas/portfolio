@@ -2,42 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
-    --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 0 0% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    --radius: 0.5rem;
-    --blue-accent: #00a2ff;
-  }
-
-  * {
-    @apply border-border;
-  }
-
-  body {
-    @apply bg-black text-white font-sans;
-  }
+:root {
+  --blue-accent: #00a2ff;
 }
 
-@layer components {
-  .blue-divider {
-    height: 1px;
-    background: linear-gradient(
-      90deg,
-      rgba(0, 162, 255, 0) 0%,
-      rgba(0, 162, 255, 0.8) 50%,
-      rgba(0, 162, 255, 0) 100%
-    );
-  }
+body {
+  @apply bg-black text-white;
+}
+
+.blue-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 162, 255, 0) 0%,
+    rgba(0, 162, 255, 0.8) 50%,
+    rgba(0, 162, 255, 0) 100%
+  );
 }

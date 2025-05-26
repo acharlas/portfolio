@@ -5,6 +5,7 @@
     "target": "ES6",
     "skipLibCheck": true,
     "strict": true,
+    "strictNullChecks": true,
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
@@ -27,7 +28,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "__tests__/page.test.jsx"
+    "__tests__/page.test.tsx"
   ],
   "exclude": ["node_modules"]
 }
