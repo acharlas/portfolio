@@ -4,8 +4,11 @@ import { ArrowRight } from "lucide-react";
 export default function Home() {
   // Tech stack items
   const techStack = [
+    "Python",
     "JavaScript",
     "TypeScript",
+    "C/C++",
+    "Docker",
     "React",
     "Next.js",
     "Node.js",
@@ -32,11 +35,11 @@ export default function Home() {
             </p>
 
             {/* Tech Stack */}
-            <div className="mb-16">
+            <div className="mb-16 w-full">
               <h2 className="text-center text-gray-400 mb-4 text-sm uppercase tracking-wider">
                 Tech Stack
               </h2>
-              <div className="flex flex-wrap justify-center gap-3">
+              <div className="mx-auto w-4/5 flex flex-wrap justify-center gap-3">
                 {techStack.map((tech) => (
                   <span
                     key={tech}
