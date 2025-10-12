@@ -15,6 +15,7 @@ export default function ParticleBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particles = useRef<Particle[]>([]);
   const animationFrameId = useRef<number | undefined>(undefined);
+  const resizeTimeoutId = useRef<number | undefined>(undefined);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -24,14 +25,23 @@ export default function ParticleBackground() {
     if (!ctx) return;
 
     // Set canvas to full screen
-    const handleResize = () => {
+    const resizeCanvas = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
       initParticles();
     };
 
+    const handleResize = () => {
+      if (resizeTimeoutId.current !== undefined) {
+        window.clearTimeout(resizeTimeoutId.current);
+      }
+      resizeTimeoutId.current = window.setTimeout(() => {
+        resizeCanvas();
+      }, 150);
+    };
+
     window.addEventListener("resize", handleResize);
-    handleResize();
+    resizeCanvas();
 
     // Initialize particles
     function initParticles() {
@@ -110,6 +120,9 @@ export default function ParticleBackground() {
     // Cleanup
     return () => {
       window.removeEventListener("resize", handleResize);
+      if (resizeTimeoutId.current !== undefined) {
+        window.clearTimeout(resizeTimeoutId.current);
+      }
       if (animationFrameId.current !== undefined) {
         cancelAnimationFrame(animationFrameId.current);
       }

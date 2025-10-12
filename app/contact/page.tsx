@@ -1,83 +1,71 @@
 "use client";
 
 import type React from "react";
-import { useState, useEffect } from "react";
+import type { Metadata } from "next";
+import { useState, useEffect, useRef } from "react";
 import { Send, Mail, MapPin, ExternalLink } from "lucide-react";
+import {
+  CONTACT_API_ENDPOINT,
+  CONTACT_MOBILE_BREAKPOINT,
+  CONTACT_RATE_LIMIT_MS,
+} from "@/lib/config";
+import {
+  validateContactForm,
+  type ContactFormData,
+  type ContactFormErrors,
+} from "@/lib/contact-validation";
+import { logClientError } from "@/lib/logger";
 
-interface FormData {
-  name: string;
-  email: string;
-  message: string;
-}
+export const metadata: Metadata = {
+  title: "Contact | Axel Charlassier",
+  description:
+    "Get in touch with Axel Charlassier for collaborations, freelance work, or engineering opportunities.",
+  openGraph: {
+    title: "Contact | Axel Charlassier",
+    description:
+      "Reach out to Axel Charlassier to discuss projects, collaborations, or new opportunities.",
+    type: "website",
+  },
+};
 
-interface FormErrors {
-  name?: string;
-  email?: string;
+type SubmitStatus = {
+  type: "success" | "error" | null;
   message?: string;
-}
-
-// Configuration
-const API_ENDPOINT =
-  process.env.NEXT_PUBLIC_API_ENDPOINT ||
-  "https://portfolio-backend-three-umber.vercel.app/api/send-email";
-const MOBILE_BREAKPOINT = 768;
+};
 
 export default function ContactPage() {
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<ContactFormData>({
     name: "",
     email: "",
     message: "",
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<null | "success" | "error">(
-    null
-  );
-  const [errors, setErrors] = useState<FormErrors>({});
+  const [submitStatus, setSubmitStatus] = useState<SubmitStatus>({
+    type: null,
+  });
+  const [errors, setErrors] = useState<ContactFormErrors>({});
   const [isMobile, setIsMobile] = useState(false);
+  const [honeypotValue, setHoneypotValue] = useState("");
+  const lastSubmissionRef = useRef<number | null>(null);
 
   useEffect(() => {
     const checkMobile = () =>
-      setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
+      setIsMobile(window.innerWidth < CONTACT_MOBILE_BREAKPOINT);
 
     checkMobile();
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  const validateForm = (): boolean => {
-    const newErrors: FormErrors = {};
-
-    if (!formData.name.trim()) {
-      newErrors.name = "Name is required";
-    } else if (formData.name.trim().length < 2) {
-      newErrors.name = "Name must be at least 2 characters";
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!emailRegex.test(formData.email)) {
-      newErrors.email = "Please enter a valid email address";
-    }
-
-    if (!formData.message.trim()) {
-      newErrors.message = "Message is required";
-    } else if (formData.message.trim().length < 10) {
-      newErrors.message = "Message must be at least 10 characters";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    setSubmitStatus((prev) => (prev.type ? { type: null } : prev));
 
-    if (errors[name as keyof FormErrors]) {
+    if (errors[name as keyof ContactFormErrors]) {
       setErrors((prev) => ({ ...prev, [name]: undefined }));
     }
   };
@@ -85,13 +73,42 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!validateForm()) return;
+    if (honeypotValue) {
+      setSubmitStatus({
+        type: "error",
+        message:
+          "Submission blocked. If you're human, please leave the hidden field untouched.",
+      });
+      return;
+    }
+
+    if (
+      lastSubmissionRef.current &&
+      Date.now() - lastSubmissionRef.current < CONTACT_RATE_LIMIT_MS
+    ) {
+      setSubmitStatus({
+        type: "error",
+        message: "Please wait a few moments before sending another message.",
+      });
+      return;
+    }
+
+    const { errors: validationErrors, isValid } = validateContactForm(formData);
+
+    setErrors(validationErrors);
+
+    if (!isValid) {
+      setSubmitStatus({ type: "error", message: "Please fix the errors above." });
+      return;
+    }
 
     setIsSubmitting(true);
-    setSubmitStatus(null);
+    setSubmitStatus({ type: null });
+
+    let response: Response | undefined;
 
     try {
-      const response = await fetch(API_ENDPOINT, {
+      response = await fetch(CONTACT_API_ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -102,14 +119,35 @@ export default function ContactPage() {
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorBody = await response.text();
+        throw new Error(
+          `Request failed with status ${response.status}: ${errorBody}`
+        );
       }
 
-      setSubmitStatus("success");
+      lastSubmissionRef.current = Date.now();
+      setSubmitStatus({
+        type: "success",
+        message: "Your message has been sent successfully! I'll get back to you soon.",
+      });
       setFormData({ name: "", email: "", message: "" });
+      setHoneypotValue("");
     } catch (error) {
-      console.error("Form submission error:", error);
-      setSubmitStatus("error");
+      await logClientError({
+        message: "Contact form submission failed",
+        error,
+        context: {
+          status: response?.status,
+        },
+      });
+
+      setSubmitStatus({
+        type: "error",
+        message:
+          error instanceof Error
+            ? `There was an error sending your message: ${error.message}`
+            : "There was an unexpected error sending your message.",
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -149,6 +187,16 @@ export default function ContactPage() {
             <h2 className="text-2xl font-bold mb-6">Send Me a Message</h2>
 
             <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+              <input
+                type="text"
+                name="company"
+                value={honeypotValue}
+                onChange={(event) => setHoneypotValue(event.target.value)}
+                className="hidden"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+              />
               <FormField
                 id="name"
                 label="Name *"
@@ -269,6 +317,7 @@ function FormField({
       ? "border-red-500 focus:ring-red-500"
       : "border-gray-700/80 focus:ring-[#00a2ff]"
   }`;
+  const textareaMinHeightClasses = "min-h-[80px] md:min-h-[150px]";
 
   return (
     <div>
@@ -288,9 +337,7 @@ function FormField({
           rows={rows}
           aria-invalid={!!error}
           aria-describedby={error ? `${id}-error` : undefined}
-          className={`${baseClasses} resize-vertical min-h-[${
-            rows && rows < 4 ? "80px" : "150px"
-          }]`}
+          className={`${baseClasses} resize-vertical ${textareaMinHeightClasses}`}
         />
       ) : (
         <input
@@ -314,25 +361,25 @@ function FormField({
   );
 }
 
-function StatusMessage({ status }: { status: "success" | "error" | null }) {
-  if (!status) return null;
+function StatusMessage({ status }: { status: SubmitStatus }) {
+  if (!status.type) return null;
 
   return (
     <div
       className={`p-4 border rounded-md ${
-        status === "success"
+        status.type === "success"
           ? "bg-green-900/20 border-green-500/20"
           : "bg-red-900/20 border-red-500/20"
       }`}
+      role="status"
+      aria-live={status.type === "success" ? "polite" : "assertive"}
     >
       <p
         className={`text-sm ${
-          status === "success" ? "text-green-400" : "text-red-400"
+          status.type === "success" ? "text-green-400" : "text-red-400"
         }`}
       >
-        {status === "success"
-          ? "Your message has been sent successfully! I'll get back to you soon."
-          : "There was an error sending your message. Please try again or contact me directly."}
+        {status.message}
       </p>
     </div>
   );

@@ -49,8 +49,13 @@ export default function Header() {
 function ResumeDropdown() {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="flex items-center text-sm font-medium text-white/80 hover:text-[#00a2ff] transition-colors focus:outline-none">
-        Resume <ChevronDown className="ml-1 h-4 w-4" />
+      <DropdownMenuTrigger asChild>
+        <button
+          type="button"
+          className="flex items-center text-sm font-medium text-white/80 hover:text-[#00a2ff] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00a2ff] focus-visible:ring-offset-2 focus-visible:ring-offset-black/40 rounded-full px-2"
+        >
+          Resume <ChevronDown className="ml-1 h-4 w-4" />
+        </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"

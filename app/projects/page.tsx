@@ -2,12 +2,19 @@
 
 import type React from "react";
 import Image from "next/image";
+import type { Metadata } from "next";
 import { ExternalLink } from "lucide-react";
 
-// Helper function to get correct asset path
-const getAssetPath = (path: string) => {
-  const basePath = process.env.NODE_ENV === "production" ? "/portfolio" : "";
-  return `${basePath}/${path}`;
+export const metadata: Metadata = {
+  title: "Projects | Axel Charlassier",
+  description:
+    "Explore full-stack and graphics projects including React Three Fiber simulations, NestJS applications, and game modding work.",
+  openGraph: {
+    title: "Projects | Axel Charlassier",
+    description:
+      "Selected projects showcasing experience with WebGL, NestJS, Vulkan, and Baldur's Gate 3 modding.",
+    type: "website",
+  },
 };
 
 const projects = [
@@ -17,7 +24,7 @@ const projects = [
     description:
       "A simulation of chaotic attractors using React Three Fiber and Leva controls. Features modular components for Halvorsen and Lorenz attractors, with a particle system displaying smooth color gradient trails.",
     technologies: ["React", "React Three Fiber", "Leva", "React Three drei"],
-    image: getAssetPath("projects/chaos-equation-screenshot.webp"),
+    image: "/projects/chaos-equation-screenshot.webp",
     githubUrl: "https://github.com/acharlas/Chaos-Equations",
     liveUrl: "https://acharlas.github.io/Chaos-Equations/",
   },
@@ -27,7 +34,7 @@ const projects = [
     description:
       "A full-stack web application of the classic Pong game, developed as part of the 42 school curriculum. Includes user authentication, real-time gameplay, and a leaderboard.",
     technologies: ["React", "NestJS", "PostgreSQL", "Docker"],
-    image: getAssetPath("projects/transcendence-screenshot.webp"),
+    image: "/projects/transcendence-screenshot.webp",
     githubUrl: "https://github.com/acharlas/42-transcendence",
     liveUrl: "",
   },
@@ -37,7 +44,7 @@ const projects = [
     description:
       "A custom rendering engine built with Vulkan and GLFW, demonstrating the setup of a Vulkan environment from window initialization to rendering a simple scene.",
     technologies: ["C++", "Vulkan", "GLFW", "GLSL"],
-    image: getAssetPath("projects/vulkanengine-water-screenshot.webp"),
+    image: "/projects/vulkanengine-water-screenshot.webp",
     githubUrl: "https://github.com/acharlas/vulkan-engine",
     liveUrl: "",
   },
@@ -47,7 +54,7 @@ const projects = [
     description:
       "A mod for Baldur's Gate 3 built using the Divinity Engine, integrating LUA scripting for dynamic interactions and gameplay adjustments.",
     technologies: ["Divinity Engine", "LUA", "Game Modding"],
-    image: getAssetPath("projects/battlemage-screenshot.webp"),
+    image: "/projects/battlemage-screenshot.webp",
     githubUrl: "",
     liveUrl: "https://mod.io/g/baldursgate3/m/battlemage",
   },
@@ -77,6 +84,7 @@ function ProjectCard({ project }: { project: (typeof projects)[0] }) {
   const mainLinkUrl = project.githubUrl || project.liveUrl;
 
   const handleCardClick = () => {
+    if (!mainLinkUrl) return;
     window.open(mainLinkUrl, "_blank", "noopener,noreferrer");
   };
 
@@ -88,7 +96,20 @@ function ProjectCard({ project }: { project: (typeof projects)[0] }) {
   return (
     <div
       onClick={handleCardClick}
-      className="bg-gray-900/80 rounded-lg overflow-hidden border border-gray-800 hover:border-gray-700 hover:bg-gray-800/90 transition-all flex flex-col cursor-pointer group"
+      className={`bg-gray-900/80 rounded-lg overflow-hidden border border-gray-800 transition-all flex flex-col group ${
+        mainLinkUrl
+          ? "hover:border-gray-700 hover:bg-gray-800/90 cursor-pointer"
+          : "cursor-default"
+      }`}
+      role={mainLinkUrl ? "button" : undefined}
+      tabIndex={mainLinkUrl ? 0 : -1}
+      onKeyDown={(event) => {
+        if (!mainLinkUrl) return;
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          handleCardClick();
+        }
+      }}
     >
       <div className="relative w-full aspect-video">
         <Image
@@ -128,6 +149,11 @@ function ProjectCard({ project }: { project: (typeof projects)[0] }) {
               <ExternalLink className="mr-1 h-3.5 w-3.5" />
               Live Demo
             </button>
+          )}
+          {!mainLinkUrl && (
+            <span className="text-xs text-gray-500" aria-live="polite">
+              Links coming soon
+            </span>
           )}
         </div>
       </div>
