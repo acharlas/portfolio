@@ -1,15 +1,15 @@
 # Dockerfile
  
-# Use an existing node alpine image as a base image.
-FROM node:23-alpine
+# Use an LTS node alpine image as a base image.
+FROM node:20-alpine
 
 # Set the working directory.
 WORKDIR /app
-# Copy the package.json file.
-COPY package.json .
+# Copy the package.json and lockfile.
+COPY package.json package-lock.json ./
  
 # Install application dependencies.
-RUN yarn install --verbose --no-audit
+RUN npm ci
  
 # Copy the rest of the application files.
 COPY . .
@@ -18,4 +18,4 @@ COPY . .
 EXPOSE 3000
  
 # Run the application.
-CMD ["yarn", "dev"]
+CMD ["npm", "run", "dev"]

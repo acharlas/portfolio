@@ -3,6 +3,7 @@
 import type React from "react";
 import Image from "next/image";
 import { ExternalLink } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 // Helper function to get correct asset path
 const getAssetPath = (path: string) => {
@@ -33,6 +34,23 @@ const projects = [
   },
   {
     id: 3,
+    title: "MyStagram",
+    description:
+      "MyStagram is a lightweight Instagram-style demo that focuses on the essentials: authenticated users can publish posts, react with likes, leave comments, and follow each other. Everything runs locally via Docker Compose with a FastAPI backend, a Next.js frontend, and a handful of supporting services (PostgreSQL, Redis, MinIO).",
+    technologies: [
+      "React",
+      "Docker",
+      "MinIO",
+      "PostgreSQL",
+      "Redis",
+      "Python",
+    ],
+    image: getAssetPath("projects/MyStagram-screenshot.webp"),
+    githubUrl: "https://github.com/acharlas/MyStagram",
+    liveUrl: "",
+  },
+  {
+    id: 4,
     title: "Vulkan Engine",
     description:
       "A custom rendering engine built with Vulkan and GLFW, demonstrating the setup of a Vulkan environment from window initialization to rendering a simple scene.",
@@ -42,7 +60,7 @@ const projects = [
     liveUrl: "",
   },
   {
-    id: 4,
+    id: 5,
     title: "Battlemage Mod for Baldur's Gate 3",
     description:
       "A mod for Baldur's Gate 3 built using the Divinity Engine, integrating LUA scripting for dynamic interactions and gameplay adjustments.",
@@ -74,9 +92,11 @@ export default function ProjectsPage() {
 }
 
 function ProjectCard({ project }: { project: (typeof projects)[0] }) {
-  const mainLinkUrl = project.githubUrl || project.liveUrl;
+  const mainLinkUrl = project.githubUrl || project.liveUrl || null;
+  const isClickable = Boolean(mainLinkUrl);
 
   const handleCardClick = () => {
+    if (!mainLinkUrl) return;
     window.open(mainLinkUrl, "_blank", "noopener,noreferrer");
   };
 
@@ -84,11 +104,27 @@ function ProjectCard({ project }: { project: (typeof projects)[0] }) {
     e.stopPropagation();
     window.open(project.liveUrl, "_blank", "noopener,noreferrer");
   };
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (!isClickable) return;
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      handleCardClick();
+    }
+  };
 
   return (
     <div
       onClick={handleCardClick}
-      className="bg-gray-900/80 rounded-lg overflow-hidden border border-gray-800 hover:border-gray-700 hover:bg-gray-800/90 transition-all flex flex-col cursor-pointer group"
+      onKeyDown={handleKeyDown}
+      tabIndex={isClickable ? 0 : -1}
+      role={isClickable ? "link" : undefined}
+      aria-disabled={!isClickable}
+      className={cn(
+        "bg-gray-900/80 rounded-lg overflow-hidden border border-gray-800 transition-all flex flex-col group",
+        isClickable
+          ? "hover:border-gray-700 hover:bg-gray-800/90 cursor-pointer"
+          : "cursor-default"
+      )}
     >
       <div className="relative w-full aspect-video">
         <Image

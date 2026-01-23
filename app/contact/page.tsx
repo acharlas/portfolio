@@ -3,6 +3,7 @@
 import type React from "react";
 import { useState, useEffect } from "react";
 import { Send, Mail, MapPin, ExternalLink } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface FormData {
   name: string;
@@ -244,7 +245,7 @@ function ContactInfoCard({
 interface FormFieldProps {
   id: string;
   label: string;
-  type: string;
+  type: "text" | "email" | "textarea";
   value: string;
   onChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -264,11 +265,12 @@ function FormField({
   rows,
   required,
 }: FormFieldProps) {
-  const baseClasses = `w-full px-4 py-3 bg-gray-800/80 border rounded-md focus:outline-none focus:ring-2 transition-colors ${
+  const baseClasses = cn(
+    "w-full px-4 py-3 bg-gray-800/80 border rounded-md focus:outline-none focus:ring-2 transition-colors",
     error
       ? "border-red-500 focus:ring-red-500"
       : "border-gray-700/80 focus:ring-[#00a2ff]"
-  }`;
+  );
 
   return (
     <div>
@@ -288,9 +290,11 @@ function FormField({
           rows={rows}
           aria-invalid={!!error}
           aria-describedby={error ? `${id}-error` : undefined}
-          className={`${baseClasses} resize-vertical min-h-[${
-            rows && rows < 4 ? "80px" : "150px"
-          }]`}
+          className={cn(
+            baseClasses,
+            "resize-y",
+            rows && rows < 4 ? "min-h-20" : "min-h-[150px]"
+          )}
         />
       ) : (
         <input

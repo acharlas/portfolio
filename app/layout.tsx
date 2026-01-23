@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/header";
 import ParticleBackground from "@/components/particle-background";
+import FooterYear from "@/components/footer-year";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -47,8 +48,7 @@ export default function RootLayout({
             <div className="flex flex-col md:flex-row justify-between items-center">
               <div className="mb-4 md:mb-0">
                 <p className="text-gray-500 text-sm">
-                  &copy; {new Date().getFullYear()} Axel Charlassier. All rights
-                  reserved.
+                  &copy; <FooterYear /> Axel Charlassier. All rights reserved.
                 </p>
               </div>
 

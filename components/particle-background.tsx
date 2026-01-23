@@ -15,6 +15,7 @@ export default function ParticleBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particles = useRef<Particle[]>([]);
   const animationFrameId = useRef<number | undefined>(undefined);
+  const canvasSize = useRef({ width: 0, height: 0 });
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -23,10 +24,27 @@ export default function ParticleBackground() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    );
+    if (prefersReducedMotion.matches) return;
+
     // Set canvas to full screen
     const handleResize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
+      canvas.style.width = `${window.innerWidth}px`;
+      canvas.style.height = `${window.innerHeight}px`;
+
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.scale(dpr, dpr);
+
+      canvasSize.current = {
+        width: window.innerWidth,
+        height: window.innerHeight,
+      };
+
       initParticles();
     };
 
@@ -38,12 +56,15 @@ export default function ParticleBackground() {
       if (!canvas) return;
 
       particles.current = [];
-      const particleCount = Math.min(Math.floor(window.innerWidth / 5), 200); // Responsive particle count
+      const particleCount = Math.min(
+        Math.floor(canvasSize.current.width / 5),
+        200
+      ); // Responsive particle count
 
       for (let i = 0; i < particleCount; i++) {
         particles.current.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
+          x: Math.random() * canvasSize.current.width,
+          y: Math.random() * canvasSize.current.height,
           size: Math.random() * 2 + 0.5,
           speedX: (Math.random() - 0.5) * 0.5,
           speedY: (Math.random() - 0.5) * 0.5,
@@ -56,7 +77,7 @@ export default function ParticleBackground() {
     function animate() {
       if (!ctx || !canvas) return;
 
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.clearRect(0, 0, canvasSize.current.width, canvasSize.current.height);
 
       // Update and draw particles
       particles.current.forEach((particle, index) => {
@@ -64,10 +85,16 @@ export default function ParticleBackground() {
         particle.y += particle.speedY;
 
         // Bounce off edges
-        if (particle.x > canvas.width || particle.x < 0) {
+        if (
+          particle.x > canvasSize.current.width ||
+          particle.x < 0
+        ) {
           particle.speedX = -particle.speedX;
         }
-        if (particle.y > canvas.height || particle.y < 0) {
+        if (
+          particle.y > canvasSize.current.height ||
+          particle.y < 0
+        ) {
           particle.speedY = -particle.speedY;
         }
 
@@ -87,15 +114,20 @@ export default function ParticleBackground() {
     // Connect particles with lines if they're close enough
     function connectParticles(particle: Particle, index: number) {
       if (!ctx) return;
+      const maxDistance = 100;
+      const maxDistanceSq = maxDistance * maxDistance;
 
       for (let i = index + 1; i < particles.current.length; i++) {
         const dx = particle.x - particles.current[i].x;
         const dy = particle.y - particles.current[i].y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
+        const distanceSq = dx * dx + dy * dy;
 
-        if (distance < 100) {
+        if (distanceSq < maxDistanceSq) {
+          const distance = Math.sqrt(distanceSq);
           ctx.beginPath();
-          ctx.strokeStyle = `rgba(0, 162, 255, ${0.1 * (1 - distance / 100)})`;
+          ctx.strokeStyle = `rgba(0, 162, 255, ${
+            0.1 * (1 - distance / maxDistance)
+          })`;
           ctx.lineWidth = 0.5;
           ctx.moveTo(particle.x, particle.y);
           ctx.lineTo(particles.current[i].x, particles.current[i].y);
@@ -119,7 +151,7 @@ export default function ParticleBackground() {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed top-0 left-0 w-full h-full -z-10 opacity-70"
+      className="fixed top-0 left-0 w-full h-full -z-10 opacity-70 motion-reduce:hidden"
       aria-hidden="true"
     />
   );
