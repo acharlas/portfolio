@@ -13,6 +13,15 @@ import {
 
 export default function Header() {
   const pathname = usePathname();
+  const basePath = process.env.NODE_ENV === "production" ? "/portfolio" : "";
+  const normalizePath = (path: string) => {
+    const withoutBase =
+      basePath && path.startsWith(basePath)
+        ? path.slice(basePath.length) || "/"
+        : path;
+    return withoutBase === "/" ? "/" : withoutBase.replace(/\/$/, "");
+  };
+  const currentPath = normalizePath(pathname ?? "/");
 
   const links = [
     { href: "/", label: "Home" },
@@ -30,7 +39,9 @@ export default function Header() {
                 href={link.href}
                 className={cn(
                   "text-sm font-medium transition-colors hover:text-[#00a2ff]",
-                  pathname === link.href ? "text-[#00a2ff]" : "text-white/80"
+                  normalizePath(link.href) === currentPath
+                    ? "text-[#00a2ff]"
+                    : "text-white/80"
                 )}
               >
                 {link.label}

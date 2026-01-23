@@ -3,7 +3,7 @@
 
 # Portfolio
 
-* This repository contains the source code for my portfolio website—built with Next.js, TypeScript, and Tailwind CSS. It’s designed as a straightforward, modern, and responsive showcase of my work and projects, leveraging server-side rendering for enhanced performance and strict type safety for improved code quality. 
+* This repository contains the source code for my portfolio website—built with Next.js, TypeScript, and Tailwind CSS. It’s designed as a straightforward, modern, and responsive showcase of my work and projects, using static export for GitHub Pages and strict type safety for improved code quality.
 * Additionally, the site is carefully deployed using a robust CI/CD pipeline with GitHub Actions that runs tests to ensure reliability throughout the deployment process.
 
 
@@ -16,7 +16,7 @@
 
 ## Technologies
 
-- [Next.js](https://nextjs.org/) – Framework for building React applications with server-side rendering.
+- [Next.js](https://nextjs.org/) – Framework for building React applications and static sites.
 - [TypeScript](https://www.typescriptlang.org/) – A typed superset of JavaScript that compiles to plain JavaScript.
 - [Tailwind CSS](https://tailwindcss.com/) – Utility-first CSS framework for rapid UI development.
 
@@ -48,16 +48,16 @@ Then open [http://localhost:3000](http://localhost:3000) in your browser to see 
 
 ## Building for Production
 
-To build the project for production:
+To build the static export for GitHub Pages:
 
 ```
 npm run build
 ```
 
-Once built, you can run the production server with:
+The build output is written to `out/`. You can preview it locally with any static server, for example:
 
 ```
-npm run start
+npx serve out
 ```
 
 ## Visit the Website
@@ -94,4 +94,3 @@ No unnecessary embellishments—just a functional, modern portfolio that gets th
 [Jest.js]: https://img.shields.io/badge/Jest-323330?style=for-the-badge&logo=Jest&logoColor=white
 [jest-url]: https://jestjs.io/
 [build]: https://img.shields.io/github/actions/workflow/status/acharlas/portfolio/deploy.yml
-
