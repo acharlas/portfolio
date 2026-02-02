@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { FileText, ChevronDown } from "lucide-react";
+import { BASE_PATH } from "@/lib/base-path";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,11 +14,10 @@ import {
 
 export default function Header() {
   const pathname = usePathname();
-  const basePath = process.env.NODE_ENV === "production" ? "/portfolio" : "";
   const normalizePath = (path: string) => {
     const withoutBase =
-      basePath && path.startsWith(basePath)
-        ? path.slice(basePath.length) || "/"
+      BASE_PATH && path.startsWith(BASE_PATH)
+        ? path.slice(BASE_PATH.length) || "/"
         : path;
     return withoutBase === "/" ? "/" : withoutBase.replace(/\/$/, "");
   };
