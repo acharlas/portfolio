@@ -11,11 +11,26 @@ interface Particle {
   color: string;
 }
 
+const MAX_CONNECTION_DISTANCE = 100;
+const MAX_CONNECTION_DISTANCE_SQ =
+  MAX_CONNECTION_DISTANCE * MAX_CONNECTION_DISTANCE;
+const MIN_CONNECTION_WIDTH = 768;
+const CELL_SIZE = MAX_CONNECTION_DISTANCE;
+const MAX_PARTICLE_COUNT = 200;
+const TARGET_CONNECTION_PARTICLES = 140;
+const MAX_CONNECTION_LINES = 300;
+
 export default function ParticleBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particles = useRef<Particle[]>([]);
   const animationFrameId = useRef<number | undefined>(undefined);
   const canvasSize = useRef({ width: 0, height: 0 });
+  const gridRef = useRef<{
+    cells: number[][];
+    columns: number;
+    rows: number;
+  }>({ cells: [], columns: 0, rows: 0 });
+  const frameCounter = useRef(0);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -28,6 +43,25 @@ export default function ParticleBackground() {
       "(prefers-reduced-motion: reduce)"
     );
     if (prefersReducedMotion.matches) return;
+
+    function initGrid() {
+      const columns = Math.max(
+        1,
+        Math.ceil(canvasSize.current.width / CELL_SIZE)
+      );
+      const rows = Math.max(
+        1,
+        Math.ceil(canvasSize.current.height / CELL_SIZE)
+      );
+      const totalCells = columns * rows;
+      const cells = new Array<number[]>(totalCells);
+
+      for (let i = 0; i < totalCells; i++) {
+        cells[i] = [];
+      }
+
+      gridRef.current = { cells, columns, rows };
+    }
 
     // Set canvas to full screen
     const handleResize = () => {
@@ -45,6 +79,7 @@ export default function ParticleBackground() {
         height: window.innerHeight,
       };
 
+      initGrid();
       initParticles();
     };
 
@@ -58,7 +93,7 @@ export default function ParticleBackground() {
       particles.current = [];
       const particleCount = Math.min(
         Math.floor(canvasSize.current.width / 5),
-        200
+        MAX_PARTICLE_COUNT
       ); // Responsive particle count
 
       for (let i = 0; i < particleCount; i++) {
@@ -79,8 +114,8 @@ export default function ParticleBackground() {
 
       ctx.clearRect(0, 0, canvasSize.current.width, canvasSize.current.height);
 
-      // Update and draw particles
-      particles.current.forEach((particle, index) => {
+      // Update particle positions
+      particles.current.forEach((particle) => {
         particle.x += particle.speedX;
         particle.y += particle.speedY;
 
@@ -97,41 +132,126 @@ export default function ParticleBackground() {
         ) {
           particle.speedY = -particle.speedY;
         }
+      });
 
-        // Draw particle
+      // Draw particles
+      particles.current.forEach((particle) => {
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
         ctx.fillStyle = particle.color;
         ctx.fill();
+      });
+
+      const enableConnections = canvasSize.current.width >= MIN_CONNECTION_WIDTH;
+      if (enableConnections) {
+        frameCounter.current += 1;
+        if (!gridRef.current.columns || !gridRef.current.rows) {
+          initGrid();
+        }
+
+        const { cells, columns, rows } = gridRef.current;
+
+        for (const cell of cells) {
+          cell.length = 0;
+        }
+
+        const connectionStride = Math.max(
+          1,
+          Math.ceil(particles.current.length / TARGET_CONNECTION_PARTICLES)
+        );
+        const strideOffset = frameCounter.current % connectionStride;
+        let lineCount = 0;
+
+        particles.current.forEach((particle, index) => {
+          const cellX = Math.min(
+            columns - 1,
+            Math.max(0, Math.floor(particle.x / CELL_SIZE))
+          );
+          const cellY = Math.min(
+            rows - 1,
+            Math.max(0, Math.floor(particle.y / CELL_SIZE))
+          );
+          cells[cellY * columns + cellX].push(index);
+        });
 
         // Connect particles with lines if they're close enough
-        connectParticles(particle, index);
-      });
+        particles.current.forEach((particle, index) => {
+          if (lineCount >= MAX_CONNECTION_LINES) return;
+          connectParticles(
+            particle,
+            index,
+            cells,
+            columns,
+            rows,
+            connectionStride,
+            strideOffset,
+            () => lineCount >= MAX_CONNECTION_LINES,
+            () => {
+              lineCount += 1;
+            }
+          );
+        });
+      }
 
       animationFrameId.current = requestAnimationFrame(animate);
     }
 
     // Connect particles with lines if they're close enough
-    function connectParticles(particle: Particle, index: number) {
+    function connectParticles(
+      particle: Particle,
+      index: number,
+      cells: number[][],
+      columns: number,
+      rows: number,
+      connectionStride: number,
+      strideOffset: number,
+      isLineLimitReached: () => boolean,
+      onLineDrawn: () => void
+    ) {
       if (!ctx) return;
-      const maxDistance = 100;
-      const maxDistanceSq = maxDistance * maxDistance;
+      if ((index - strideOffset) % connectionStride !== 0) return;
+      const cellX = Math.min(
+        columns - 1,
+        Math.max(0, Math.floor(particle.x / CELL_SIZE))
+      );
+      const cellY = Math.min(
+        rows - 1,
+        Math.max(0, Math.floor(particle.y / CELL_SIZE))
+      );
 
-      for (let i = index + 1; i < particles.current.length; i++) {
-        const dx = particle.x - particles.current[i].x;
-        const dy = particle.y - particles.current[i].y;
-        const distanceSq = dx * dx + dy * dy;
+      for (let offsetY = -1; offsetY <= 1; offsetY++) {
+        for (let offsetX = -1; offsetX <= 1; offsetX++) {
+          const neighborX = cellX + offsetX;
+          const neighborY = cellY + offsetY;
+          if (neighborX < 0 || neighborX >= columns) continue;
+          if (neighborY < 0 || neighborY >= rows) continue;
 
-        if (distanceSq < maxDistanceSq) {
-          const distance = Math.sqrt(distanceSq);
-          ctx.beginPath();
-          ctx.strokeStyle = `rgba(0, 162, 255, ${
-            0.1 * (1 - distance / maxDistance)
-          })`;
-          ctx.lineWidth = 0.5;
-          ctx.moveTo(particle.x, particle.y);
-          ctx.lineTo(particles.current[i].x, particles.current[i].y);
-          ctx.stroke();
+          const bucket = cells[neighborY * columns + neighborX];
+          for (const neighborIndex of bucket) {
+            if (neighborIndex <= index) continue;
+            if ((neighborIndex - strideOffset) % connectionStride !== 0) {
+              continue;
+            }
+
+            const neighbor = particles.current[neighborIndex];
+            const dx = particle.x - neighbor.x;
+            const dy = particle.y - neighbor.y;
+            const distanceSq = dx * dx + dy * dy;
+
+            if (distanceSq < MAX_CONNECTION_DISTANCE_SQ) {
+              if (isLineLimitReached()) return;
+              const distance = Math.sqrt(distanceSq);
+              ctx.beginPath();
+              ctx.strokeStyle = `rgba(0, 162, 255, ${
+                0.1 * (1 - distance / MAX_CONNECTION_DISTANCE)
+              })`;
+              ctx.lineWidth = 0.5;
+              ctx.moveTo(particle.x, particle.y);
+              ctx.lineTo(neighbor.x, neighbor.y);
+              ctx.stroke();
+              onLineDrawn();
+            }
+          }
         }
       }
     }

@@ -1,10 +1,11 @@
 import type { NextConfig } from "next";
+import { ASSET_PREFIX, BASE_PATH } from "./lib/base-path";
 
 const nextConfig: NextConfig = {
   output: "export",
   trailingSlash: true,
-  basePath: process.env.NODE_ENV === "production" ? "/portfolio" : "",
-  assetPrefix: process.env.NODE_ENV === "production" ? "/portfolio/" : "",
+  basePath: BASE_PATH,
+  assetPrefix: ASSET_PREFIX,
   reactStrictMode: true,
   images: {
     unoptimized: true, // Required for static export

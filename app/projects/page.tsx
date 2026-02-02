@@ -1,15 +1,6 @@
-"use client";
-
-import type React from "react";
 import Image from "next/image";
 import { ExternalLink } from "lucide-react";
-import { cn } from "@/lib/utils";
-
-// Helper function to get correct asset path
-const getAssetPath = (path: string) => {
-  const basePath = process.env.NODE_ENV === "production" ? "/portfolio" : "";
-  return `${basePath}/${path}`;
-};
+import { withBasePath } from "@/lib/base-path";
 
 const projects = [
   {
@@ -18,7 +9,7 @@ const projects = [
     description:
       "A simulation of chaotic attractors using React Three Fiber and Leva controls. Features modular components for Halvorsen and Lorenz attractors, with a particle system displaying smooth color gradient trails.",
     technologies: ["React", "React Three Fiber", "Leva", "React Three drei"],
-    image: getAssetPath("projects/chaos-equation-screenshot.webp"),
+    image: withBasePath("/projects/chaos-equation-screenshot.webp"),
     githubUrl: "https://github.com/acharlas/Chaos-Equations",
     liveUrl: "https://acharlas.github.io/Chaos-Equations/",
   },
@@ -28,9 +19,9 @@ const projects = [
     description:
       "A full-stack web application of the classic Pong game, developed as part of the 42 school curriculum. Includes user authentication, real-time gameplay, and a leaderboard.",
     technologies: ["React", "NestJS", "PostgreSQL", "Docker"],
-    image: getAssetPath("projects/transcendence-screenshot.webp"),
+    image: withBasePath("/projects/transcendence-screenshot.webp"),
     githubUrl: "https://github.com/acharlas/42-transcendence",
-    liveUrl: "",
+    liveUrl: null,
   },
   {
     id: 3,
@@ -45,9 +36,9 @@ const projects = [
       "Redis",
       "Python",
     ],
-    image: getAssetPath("projects/MyStagram-screenshot.webp"),
+    image: withBasePath("/projects/MyStagram-screenshot.webp"),
     githubUrl: "https://github.com/acharlas/MyStagram",
-    liveUrl: "",
+    liveUrl: null,
   },
   {
     id: 4,
@@ -55,9 +46,9 @@ const projects = [
     description:
       "A custom rendering engine built with Vulkan and GLFW, demonstrating the setup of a Vulkan environment from window initialization to rendering a simple scene.",
     technologies: ["C++", "Vulkan", "GLFW", "GLSL"],
-    image: getAssetPath("projects/vulkanengine-water-screenshot.webp"),
+    image: withBasePath("/projects/vulkanengine-water-screenshot.webp"),
     githubUrl: "https://github.com/acharlas/vulkan-engine",
-    liveUrl: "",
+    liveUrl: null,
   },
   {
     id: 5,
@@ -65,8 +56,8 @@ const projects = [
     description:
       "A mod for Baldur's Gate 3 built using the Divinity Engine, integrating LUA scripting for dynamic interactions and gameplay adjustments.",
     technologies: ["Divinity Engine", "LUA", "Game Modding"],
-    image: getAssetPath("projects/battlemage-screenshot.webp"),
-    githubUrl: "",
+    image: withBasePath("/projects/battlemage-screenshot.webp"),
+    githubUrl: null,
     liveUrl: "https://mod.io/g/baldursgate3/m/battlemage",
   },
 ];
@@ -92,40 +83,13 @@ export default function ProjectsPage() {
 }
 
 function ProjectCard({ project }: { project: (typeof projects)[0] }) {
-  const mainLinkUrl = project.githubUrl || project.liveUrl || null;
-  const isClickable = Boolean(mainLinkUrl);
+  const primaryLinkUrl = project.liveUrl ?? project.githubUrl ?? null;
+  const secondaryLinkUrl =
+    project.liveUrl && project.githubUrl ? project.githubUrl : null;
+  const isClickable = Boolean(primaryLinkUrl);
 
-  const handleCardClick = () => {
-    if (!mainLinkUrl) return;
-    window.open(mainLinkUrl, "_blank", "noopener,noreferrer");
-  };
-
-  const handleLiveDemoClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    window.open(project.liveUrl, "_blank", "noopener,noreferrer");
-  };
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    if (!isClickable) return;
-    if (event.key === "Enter" || event.key === " ") {
-      event.preventDefault();
-      handleCardClick();
-    }
-  };
-
-  return (
-    <div
-      onClick={handleCardClick}
-      onKeyDown={handleKeyDown}
-      tabIndex={isClickable ? 0 : -1}
-      role={isClickable ? "link" : undefined}
-      aria-disabled={!isClickable}
-      className={cn(
-        "bg-gray-900/80 rounded-lg overflow-hidden border border-gray-800 transition-all flex flex-col group",
-        isClickable
-          ? "hover:border-gray-700 hover:bg-gray-800/90 cursor-pointer"
-          : "cursor-default"
-      )}
-    >
+  const cardBody = (
+    <>
       <div className="relative w-full aspect-video">
         <Image
           src={project.image}
@@ -136,8 +100,10 @@ function ProjectCard({ project }: { project: (typeof projects)[0] }) {
         />
       </div>
 
-      <div className="p-5 flex-grow flex flex-col">
-        <h2 className="text-xl font-bold mb-2 text-white">{project.title}</h2>
+      <div className="p-5 flex-1 flex flex-col">
+        <h2 className="text-xl font-bold mb-2 text-white">
+          {project.title}
+        </h2>
 
         <div className="mb-3 flex flex-wrap gap-1.5">
           {project.technologies.map((tech) => (
@@ -150,23 +116,41 @@ function ProjectCard({ project }: { project: (typeof projects)[0] }) {
           ))}
         </div>
 
-        <p className="text-gray-400 text-sm mb-4 flex-grow">
-          {project.description}
-        </p>
-
-        <div className="flex gap-4 mt-auto">
-          {project.liveUrl && (
-            <button
-              onClick={handleLiveDemoClick}
-              className="inline-flex items-center text-gray-400 hover:text-[#00a2ff]/80 transition-colors text-xs bg-transparent border-0 p-0 cursor-pointer"
-              aria-label={`View live demo of ${project.title}`}
-            >
-              <ExternalLink className="mr-1 h-3.5 w-3.5" />
-              Live Demo
-            </button>
-          )}
-        </div>
+        <p className="text-gray-400 text-sm flex-1">{project.description}</p>
       </div>
-    </div>
+    </>
+  );
+
+  return (
+    <article className="bg-gray-900/80 rounded-lg overflow-hidden border border-gray-800 flex flex-col transition-colors hover:border-gray-700">
+      {isClickable ? (
+        <a
+          href={primaryLinkUrl ?? undefined}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`Open ${project.title}`}
+          className="flex flex-col flex-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00a2ff] focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900 hover:bg-gray-800/90 transition-colors cursor-pointer"
+        >
+          {cardBody}
+        </a>
+      ) : (
+        <div className="flex flex-col flex-1">{cardBody}</div>
+      )}
+
+      {secondaryLinkUrl && (
+        <div className="px-5 pb-5 flex gap-4">
+          <a
+            href={secondaryLinkUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center text-gray-400 hover:text-[#00a2ff]/80 transition-colors text-xs"
+            aria-label={`View GitHub repository for ${project.title}`}
+          >
+            <ExternalLink className="mr-1 h-3.5 w-3.5" />
+            GitHub
+          </a>
+        </div>
+      )}
+    </article>
   );
 }
