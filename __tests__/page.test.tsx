@@ -1,21 +1,36 @@
 import "@testing-library/jest-dom";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import type { ImageProps } from "next/image";
 import Home from "../app/page";
 import Projects from "../app/projects/page";
 import Contact from "../app/contact/page";
 
 // Mock next/link
 jest.mock("next/link", () => {
-  return ({ children, href }: { children: React.ReactNode; href: string }) => {
+  const MockNextLink = ({
+    children,
+    href,
+  }: {
+    children: React.ReactNode;
+    href: string;
+  }) => {
     return <a href={href}>{children}</a>;
   };
+
+  MockNextLink.displayName = "MockNextLink";
+  return MockNextLink;
 });
 
 // Mock next/image
 jest.mock("next/image", () => {
-  return ({ src, alt, ...props }: any) => {
-    return <img src={src} alt={alt} {...props} />;
+  const MockNextImage = ({ src, alt, fill, ...props }: ImageProps) => {
+    const resolvedSrc = typeof src === "string" ? src : src.src;
+    // eslint-disable-next-line @next/next/no-img-element
+    return <img src={resolvedSrc} alt={alt} {...props} />;
   };
+
+  MockNextImage.displayName = "MockNextImage";
+  return MockNextImage;
 });
 
 // Mock fetch for contact form

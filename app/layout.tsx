@@ -5,6 +5,7 @@ import "./globals.css";
 import Header from "@/components/header";
 import ParticleBackground from "@/components/particle-background";
 import FooterYear from "@/components/footer-year";
+import { withBasePath } from "@/lib/base-path";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,8 +23,7 @@ export const viewport = {
 
 // Helper function to get correct asset path
 const getBackgroundImage = () => {
-  const basePath = process.env.NODE_ENV === "production" ? "/portfolio" : "";
-  return `url(${basePath}/mountains-bg.jpg)`;
+  return `url(${withBasePath("/mountains-bg.jpg")})`;
 };
 
 export default function RootLayout({
