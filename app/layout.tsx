@@ -74,7 +74,7 @@ export default function RootLayout({
         <div className="container mx-auto px-4 flex-grow">
           <ParticleBackground />
           <Header />
-          <main id="main-content" className="flex-grow">{children}</main>
+          <main id="main-content" className="flex-grow flex flex-col">{children}</main>
         </div>
 
         <footer className="w-full py-6 border-t border-gray-800 mt-auto">
