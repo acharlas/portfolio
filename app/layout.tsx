@@ -10,10 +10,36 @@ import { withBasePath } from "@/lib/base-path";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://acharlas.dev"),
   title: "Axel Charlassier | Portfolio",
-  description: "Full-Stack Web Developer Portfolio",
+  description:
+    "Full-Stack Web Developer Portfolio — React, Next.js, TypeScript, Python, Docker, and more.",
   keywords: ["portfolio", "web developer", "full-stack", "React", "Next.js"],
   authors: [{ name: "Axel Charlassier" }],
+  openGraph: {
+    title: "Axel Charlassier | Portfolio",
+    description:
+      "Full-Stack Web Developer Portfolio — React, Next.js, TypeScript, Python, Docker, and more.",
+    url: "https://acharlas.dev",
+    siteName: "Axel Charlassier",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Axel Charlassier | Portfolio",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Axel Charlassier | Portfolio",
+    description:
+      "Full-Stack Web Developer Portfolio — React, Next.js, TypeScript, Python, Docker, and more.",
+    images: ["/og-image.png"],
+  },
 };
 
 export const viewport = {
