@@ -1,6 +1,6 @@
 const ENV_BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH;
 const FALLBACK_BASE_PATH =
-  process.env.NODE_ENV === "production" ? "/portfolio" : "";
+  process.env.NODE_ENV === "production" ? "" : "";
 
 const normalizeBasePath = (value: string) => {
   if (!value || value === "/") return "";
