@@ -71,6 +71,17 @@ function ResumeDropdown() {
       >
         <DropdownMenuItem asChild>
           <a
+            href="https://drive.google.com/file/d/1pQ25K4UvRM-8UU_GoJwCOhwxgQwNyL76/view?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center cursor-pointer"
+          >
+            <FileText className="mr-2 h-4 w-4" />
+            <span>French</span>
+          </a>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <a
             href="https://drive.google.com/file/d/1DXmWEk-c-Eg7olLezuHYqHxux81EtMnv/view?usp=sharing"
             target="_blank"
             rel="noopener noreferrer"
@@ -78,17 +89,6 @@ function ResumeDropdown() {
           >
             <FileText className="mr-2 h-4 w-4" />
             <span>English</span>
-          </a>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <a
-            href="https://drive.google.com/file/d/1GtNjpuyeJUMrpNtdxoVu4IcqXGZcUvCd/view?usp=sharing"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center cursor-pointer"
-          >
-            <FileText className="mr-2 h-4 w-4" />
-            <span>French</span>
           </a>
         </DropdownMenuItem>
       </DropdownMenuContent>
