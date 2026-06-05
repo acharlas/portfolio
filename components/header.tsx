@@ -3,14 +3,9 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { FileText, ChevronDown } from "lucide-react";
+import { FileText } from "lucide-react";
 import { BASE_PATH } from "@/lib/base-path";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { useLanguage } from "@/components/language-provider";
 
 const normalizePath = (path: string) => {
   const withoutBase =
@@ -20,14 +15,23 @@ const normalizePath = (path: string) => {
   return withoutBase === "/" ? "/" : withoutBase.replace(/\/$/, "");
 };
 
+type NavLabelKey = "home" | "about" | "projects" | "contact";
+
+const navLabels: Record<"en" | "fr", Record<NavLabelKey, string>> = {
+  en: { home: "Home", about: "About me", projects: "Projects", contact: "Contact" },
+  fr: { home: "Accueil", about: "À propos", projects: "Projets", contact: "Contact" },
+};
+
 export default function Header() {
+  const { lang } = useLanguage();
   const pathname = usePathname();
   const currentPath = normalizePath(pathname ?? "/");
 
-  const links = [
-    { href: "/", label: "Home" },
-    { href: "/projects", label: "Projects" },
-    { href: "/contact", label: "Contact" },
+  const links: { href: string; labelKey: NavLabelKey }[] = [
+    { href: "/", labelKey: "home" },
+    { href: "/about", labelKey: "about" },
+    { href: "/projects", labelKey: "projects" },
+    { href: "/contact", labelKey: "contact" },
   ];
 
   return (
@@ -45,12 +49,12 @@ export default function Header() {
                     : "text-white/80"
                 )}
               >
-                {link.label}
+                {navLabels[lang][link.labelKey]}
               </Link>
             </li>
           ))}
           <li>
-            <ResumeDropdown />
+            <ResumeLink />
           </li>
         </ul>
       </nav>
@@ -58,41 +62,30 @@ export default function Header() {
   );
 }
 
-function ResumeDropdown() {
+const resumeLinks: Record<"en" | "fr", { label: string; url: string }> = {
+  en: {
+    label: "Resume",
+    url: "https://drive.google.com/file/d/1DXmWEk-c-Eg7olLezuHYqHxux81EtMnv/view?usp=sharing",
+  },
+  fr: {
+    label: "CV",
+    url: "https://drive.google.com/file/d/1pQ25K4UvRM-8UU_GoJwCOhwxgQwNyL76/view?usp=sharing",
+  },
+};
+
+function ResumeLink() {
+  const { lang } = useLanguage();
+  const { label, url } = resumeLinks[lang];
+
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger className="flex items-center text-sm font-medium text-white/80 hover:text-[#00a2ff] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00a2ff] focus-visible:ring-offset-2 focus-visible:ring-offset-black">
-        Resume <ChevronDown className="ml-1 h-4 w-4" />
-      </DropdownMenuTrigger>
-      <DropdownMenuContent
-        align="end"
-        className="bg-black"
-        side="bottom"
-        sideOffset={30}
-      >
-        <DropdownMenuItem asChild>
-          <a
-            href="https://drive.google.com/file/d/1pQ25K4UvRM-8UU_GoJwCOhwxgQwNyL76/view?usp=sharing"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center cursor-pointer"
-          >
-            <FileText className="mr-2 h-4 w-4" />
-            <span>French</span>
-          </a>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <a
-            href="https://drive.google.com/file/d/1DXmWEk-c-Eg7olLezuHYqHxux81EtMnv/view?usp=sharing"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center cursor-pointer"
-          >
-            <FileText className="mr-2 h-4 w-4" />
-            <span>English</span>
-          </a>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex items-center text-sm font-medium text-white/80 hover:text-[#00a2ff] transition-colors focus-visible:ring-2 focus-visible:ring-[#00a2ff] focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded"
+    >
+      <FileText className="mr-1 h-4 w-4" />
+      {label}
+    </a>
   );
 }
