@@ -103,7 +103,7 @@ export default function ParticleBackground() {
           size: Math.random() * 2 + 0.5,
           speedX: (Math.random() - 0.5) * 0.5,
           speedY: (Math.random() - 0.5) * 0.5,
-          color: `rgba(255, 255, 255, ${Math.random() * 0.5 + 0.2})`, // Blue with varying opacity
+          color: `rgba(255, 255, 255, ${Math.random() * 0.5 + 0.2})`, // White with varying opacity
         });
       }
     }

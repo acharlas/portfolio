@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Send, Mail, MapPin, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -21,7 +21,6 @@ interface FormErrors {
 const API_ENDPOINT =
   process.env.NEXT_PUBLIC_API_ENDPOINT ||
   "https://portfolio-backend-three-umber.vercel.app/api/send-email";
-const MOBILE_BREAKPOINT = 768;
 
 export default function ContactPage() {
   const [formData, setFormData] = useState<FormData>({
@@ -35,16 +34,6 @@ export default function ContactPage() {
     null
   );
   const [errors, setErrors] = useState<FormErrors>({});
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () =>
-      setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
-
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
@@ -157,6 +146,7 @@ export default function ContactPage() {
                 value={formData.name}
                 onChange={handleChange}
                 error={errors.name}
+                autoComplete="name"
                 required
               />
 
@@ -167,6 +157,8 @@ export default function ContactPage() {
                 value={formData.email}
                 onChange={handleChange}
                 error={errors.email}
+                autoComplete="email"
+                spellCheck={false}
                 required
               />
 
@@ -177,7 +169,7 @@ export default function ContactPage() {
                 value={formData.message}
                 onChange={handleChange}
                 error={errors.message}
-                rows={isMobile ? 3 : 6}
+                rows={6}
                 required
               />
 
@@ -189,7 +181,7 @@ export default function ContactPage() {
                 {isSubmitting ? (
                   <>
                     <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                    Sending...
+                    Sending…
                   </>
                 ) : (
                   <>
@@ -253,6 +245,8 @@ interface FormFieldProps {
   error?: string;
   rows?: number;
   required?: boolean;
+  autoComplete?: string;
+  spellCheck?: boolean;
 }
 
 function FormField({
@@ -264,6 +258,8 @@ function FormField({
   error,
   rows,
   required,
+  autoComplete,
+  spellCheck,
 }: FormFieldProps) {
   const baseClasses = cn(
     "w-full px-4 py-3 bg-gray-800/80 border rounded-md focus:outline-none focus:ring-2 transition-colors",
@@ -288,12 +284,12 @@ function FormField({
           onChange={onChange}
           required={required}
           rows={rows}
+          autoComplete={autoComplete}
           aria-invalid={!!error}
           aria-describedby={error ? `${id}-error` : undefined}
           className={cn(
             baseClasses,
-            "resize-y",
-            rows && rows < 4 ? "min-h-20" : "min-h-[150px]"
+            "resize-y min-h-20 md:min-h-[150px]"
           )}
         />
       ) : (
@@ -304,6 +300,8 @@ function FormField({
           value={value}
           onChange={onChange}
           required={required}
+          autoComplete={autoComplete}
+          spellCheck={spellCheck}
           aria-invalid={!!error}
           aria-describedby={error ? `${id}-error` : undefined}
           className={baseClasses}
@@ -323,6 +321,7 @@ function StatusMessage({ status }: { status: "success" | "error" | null }) {
 
   return (
     <div
+      aria-live="polite"
       className={`p-4 border rounded-md ${
         status === "success"
           ? "bg-green-900/20 border-green-500/20"

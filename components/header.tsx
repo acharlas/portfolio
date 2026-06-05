@@ -12,15 +12,16 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+const normalizePath = (path: string) => {
+  const withoutBase =
+    BASE_PATH && path.startsWith(BASE_PATH)
+      ? path.slice(BASE_PATH.length) || "/"
+      : path;
+  return withoutBase === "/" ? "/" : withoutBase.replace(/\/$/, "");
+};
+
 export default function Header() {
   const pathname = usePathname();
-  const normalizePath = (path: string) => {
-    const withoutBase =
-      BASE_PATH && path.startsWith(BASE_PATH)
-        ? path.slice(BASE_PATH.length) || "/"
-        : path;
-    return withoutBase === "/" ? "/" : withoutBase.replace(/\/$/, "");
-  };
   const currentPath = normalizePath(pathname ?? "/");
 
   const links = [
@@ -38,7 +39,7 @@ export default function Header() {
               <Link
                 href={link.href}
                 className={cn(
-                  "text-sm font-medium transition-colors hover:text-[#00a2ff]",
+                  "text-sm font-medium transition-colors hover:text-[#00a2ff] focus-visible:ring-2 focus-visible:ring-[#00a2ff] focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded",
                   normalizePath(link.href) === currentPath
                     ? "text-[#00a2ff]"
                     : "text-white/80"
@@ -60,7 +61,7 @@ export default function Header() {
 function ResumeDropdown() {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="flex items-center text-sm font-medium text-white/80 hover:text-[#00a2ff] transition-colors focus:outline-none">
+      <DropdownMenuTrigger className="flex items-center text-sm font-medium text-white/80 hover:text-[#00a2ff] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00a2ff] focus-visible:ring-offset-2 focus-visible:ring-offset-black">
         Resume <ChevronDown className="ml-1 h-4 w-4" />
       </DropdownMenuTrigger>
       <DropdownMenuContent
