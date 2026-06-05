@@ -42,10 +42,10 @@ export default function Home() {
                 Tech Stack
               </h2>
               <div className="mx-auto w-4/5 flex flex-wrap justify-center gap-3">
-                {techStack.map((tech) => (
+                {techStack.map((tech, i) => (
                   <span
                     key={tech}
-                    className="px-3 py-1 bg-gray-900 text-[#00a2ff] text-sm rounded-full border border-gray-800"
+                    className={`px-3 py-1 bg-gray-900 text-[#00a2ff] text-sm rounded-full border border-gray-800 ${i >= 9 ? "hidden sm:inline" : ""}`}
                   >
                     {tech}
                   </span>
