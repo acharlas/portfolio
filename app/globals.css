@@ -4,6 +4,7 @@
 
 :root {
   --blue-accent: #00a2ff;
+  --radius: 0.5rem;
 }
 
 body {

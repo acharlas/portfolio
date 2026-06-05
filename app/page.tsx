@@ -7,6 +7,8 @@ export default function Home() {
     "Python",
     "JavaScript",
     "TypeScript",
+    "Terraform",
+    "Ansible",
     "C/C++",
     "Docker",
     "React",
@@ -31,7 +33,7 @@ export default function Home() {
 
             {/* Subtitle */}
             <p className="text-xl md:text-2xl text-gray-500 mb-12">
-              Full-Stack Web Developer
+              DevOps & Full-Stack Web Developer
             </p>
 
             {/* Tech Stack */}

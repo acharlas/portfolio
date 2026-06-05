@@ -75,7 +75,7 @@ const projects = [
     id: 6,
     title: "Battlemage Mod for Baldur's Gate 3",
     description:
-      "A mod for Baldur's Gate 3 built using the Divinity Engine, integrating LUA scripting for dynamic interactions and gameplay adjustments.",
+      "A top 20 class mod for Baldur's Gate 3 built using the Divinity Engine, integrating LUA scripting for dynamic interactions and gameplay adjustments. Downloaded over 600K times.",
     technologies: ["Divinity Engine", "LUA", "Game Modding"],
     image: withBasePath("/projects/battlemage-screenshot.webp"),
     githubUrl: null,
@@ -143,14 +143,14 @@ function ProjectCard({ project }: { project: (typeof projects)[0] }) {
   );
 
   return (
-    <article className="bg-gray-900/80 rounded-lg overflow-hidden border border-gray-800 flex flex-col transition-colors hover:border-gray-700">
+    <article className="bg-gray-900/80 rounded-md overflow-hidden border border-gray-800 flex flex-col transition-colors hover:bg-gray-800/90 hover:border-gray-700">
       {isClickable ? (
         <a
           href={primaryLinkUrl ?? undefined}
           target="_blank"
           rel="noopener noreferrer"
           aria-label={`Open ${project.title}`}
-          className="flex flex-col flex-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00a2ff] focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900 hover:bg-gray-800/90 transition-colors cursor-pointer"
+          className="flex flex-col flex-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00a2ff] focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900 cursor-pointer"
         >
           {cardBody}
         </a>
@@ -164,10 +164,10 @@ function ProjectCard({ project }: { project: (typeof projects)[0] }) {
             href={secondaryLinkUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center text-gray-400 hover:text-[#00a2ff]/80 transition-colors text-xs"
+            className="inline-flex items-center gap-2 text-gray-400 hover:text-[#00a2ff]/80 transition-colors text-sm"
             aria-label={`View GitHub repository for ${project.title}`}
           >
-            <ExternalLink className="mr-1 h-3.5 w-3.5" />
+            <ExternalLink className="h-4 w-4" />
             GitHub
           </a>
         </div>
