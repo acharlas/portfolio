@@ -15,16 +15,6 @@ const projects = [
   },
   {
     id: 2,
-    title: "Transcendence",
-    description:
-      "A full-stack web application of the classic Pong game, developed as part of the 42 school curriculum. Includes user authentication, real-time gameplay, and a leaderboard.",
-    technologies: ["React", "NestJS", "PostgreSQL", "Docker"],
-    image: withBasePath("/projects/transcendence-screenshot.webp"),
-    githubUrl: "https://github.com/acharlas/42-transcendence",
-    liveUrl: null,
-  },
-  {
-    id: 3,
     title: "MyStagram",
     description:
       "MyStagram is a lightweight Instagram-style demo that focuses on the essentials: authenticated users can publish posts, react with likes, leave comments, and follow each other. Everything runs locally via Docker Compose with a FastAPI backend, a Next.js frontend, and a handful of supporting services (PostgreSQL, Redis, MinIO).",
@@ -41,7 +31,38 @@ const projects = [
     liveUrl: null,
   },
   {
+    id: 3,
+    title: "DockGuard",
+    description:
+      "A container image analysis dashboard with two lenses: Security (vulnerability scanning via Trivy) and Build (layer efficiency analysis via Dive). Paste a Docker image reference and inspect vulnerabilities and build optimization results in a unified UI.",
+    technologies: [
+      "Python",
+      "FastAPI",
+      "Next.js",
+      "TypeScript",
+      "PostgreSQL",
+      "Redis",
+      "Docker",
+      "Prometheus",
+      "Grafana",
+      "Terraform",
+    ],
+    image: withBasePath("/projects/dockguard-screenshot.webp"),
+    githubUrl: "https://github.com/acharlas/DockGuard",
+    liveUrl: "https://dockguard.acharlas.dev",
+  },
+  {
     id: 4,
+    title: "Transcendence",
+    description:
+      "A full-stack web application of the classic Pong game, developed as part of the 42 school curriculum. Includes user authentication, real-time gameplay, and a leaderboard.",
+    technologies: ["React", "NestJS", "PostgreSQL", "Docker"],
+    image: withBasePath("/projects/transcendence-screenshot.webp"),
+    githubUrl: "https://github.com/acharlas/42-transcendence",
+    liveUrl: null,
+  },
+  {
+    id: 5,
     title: "Vulkan Engine",
     description:
       "A custom rendering engine built with Vulkan and GLFW, demonstrating the setup of a Vulkan environment from window initialization to rendering a simple scene.",
@@ -51,7 +72,7 @@ const projects = [
     liveUrl: null,
   },
   {
-    id: 5,
+    id: 6,
     title: "Battlemage Mod for Baldur's Gate 3",
     description:
       "A mod for Baldur's Gate 3 built using the Divinity Engine, integrating LUA scripting for dynamic interactions and gameplay adjustments.",
