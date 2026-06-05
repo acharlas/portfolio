@@ -28,7 +28,7 @@ const projects = [
     ],
     image: withBasePath("/projects/MyStagram-screenshot.webp"),
     githubUrl: "https://github.com/acharlas/MyStagram",
-    liveUrl: null,
+    liveUrl: "https://mystagram.acharlas.dev",
   },
   {
     id: 3,
