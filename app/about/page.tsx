@@ -23,7 +23,7 @@ const content = {
     ],
   },
   en: {
-    heading: "About me",
+    heading: "About",
     bio: "Backend / Full-Stack Developer, graduate of École 42 with a PSI preparatory class background. Proficient in Node.js, React, Python, and PostgreSQL, with hands-on CI/CD and Docker experience. DevOps-oriented, available immediately.",
     education: "Education",
     timeline: [

@@ -17,7 +17,7 @@ const normalizePath = (path: string) => {
 type NavLabelKey = "home" | "about" | "projects" | "contact";
 
 const navLabels: Record<"en" | "fr", Record<NavLabelKey, string>> = {
-  en: { home: "Home", about: "About me", projects: "Projects", contact: "Contact" },
+  en: { home: "Home", about: "About", projects: "Projects", contact: "Contact" },
   fr: { home: "Accueil", about: "À propos", projects: "Projets", contact: "Contact" },
 };
 
