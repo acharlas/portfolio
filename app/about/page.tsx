@@ -48,13 +48,13 @@ export default function AboutPage() {
   const t = content[lang];
 
   return (
-    <div>
+    <div className="flex flex-col flex-1">
       <div className="w-full max-w-3xl mx-auto">
         <div className="blue-divider w-full mb-16"></div>
       </div>
 
-      <div className="w-screen relative left-1/2 -translate-x-1/2 backdrop-blur-md py-16 bg-[linear-gradient(180deg,transparent_0%,rgba(0,0,0,0.2)_15%,rgba(0,0,0,0.2)_85%,transparent_100%)]">
-        <div className="max-w-3xl mx-auto px-4">
+      <div className="flex-1 w-screen relative left-1/2 -translate-x-1/2 backdrop-blur-md bg-[linear-gradient(180deg,transparent_0%,rgba(0,0,0,0.2)_15%,rgba(0,0,0,0.2)_85%,transparent_100%)]">
+        <div className="max-w-3xl mx-auto px-4 h-full flex flex-col justify-center">
         <h1 className="text-4xl md:text-5xl font-bold text-gray-300 mb-10 text-pretty text-readable-strong">
           {t.heading}
         </h1>
