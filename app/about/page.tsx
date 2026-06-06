@@ -56,7 +56,7 @@ export default function AboutPage() {
           {t.heading}
         </h1>
 
-        <div className="mb-16 border-l-2 border-[#00a2ff] pl-5">
+        <div className="mb-16 border-l-2 border-[#00a2ff] pl-5 py-3 bg-gray-900/30 backdrop-blur-md rounded-md">
           <p className="text-lg text-gray-400 leading-relaxed">{t.bio}</p>
         </div>
 
@@ -66,12 +66,12 @@ export default function AboutPage() {
 
         <div className="relative mb-16">
           {t.timeline.map((item, i) => (
-            <div key={item.title} className="relative grid grid-cols-[140px_1fr] pb-10">
+            <div key={item.title} className="relative grid grid-cols-[120px_1fr] pb-10">
               <span className="text-xs text-gray-500 font-mono pt-1 text-right pr-6">
                 {item.year}
               </span>
 
-              <div className="relative pl-6 border-l border-gray-800">
+              <div className="relative pl-6 border-l border-gray-800 bg-gray-900/30 backdrop-blur-md rounded-md p-4">
                 <div className="absolute -left-[5px] top-1 w-2 h-2 rounded-full bg-[#00a2ff]" />
 
                 <h3 className="text-lg font-semibold text-white">
