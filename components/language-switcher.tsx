@@ -19,7 +19,7 @@ export default function LanguageSwitcher() {
   );
 
   return (
-    <div className="fixed top-4 right-4 z-50 flex items-center gap-3 bg-black/40 backdrop-blur-sm rounded-full px-3 py-1.5 border border-white/10">
+    <div className="fixed bottom-4 right-4 sm:top-4 sm:bottom-auto sm:right-4 z-50 flex items-center gap-3 bg-black/40 backdrop-blur-sm rounded-full px-3 py-1.5 border border-white/10">
       {btn("fr", "FR")}
       <span className="text-gray-600 text-sm">|</span>
       {btn("en", "EN")}

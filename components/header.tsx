@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { FileText } from "lucide-react";
 import { BASE_PATH } from "@/lib/base-path";
 import { useLanguage } from "@/components/language-provider";
 
@@ -36,14 +35,14 @@ export default function Header() {
 
   return (
     <div className="sticky top-0 z-50 flex justify-center py-4 w-full">
-      <nav className="bg-black/30 backdrop-blur-md rounded-full px-6 py-2 border border-white/10">
-        <ul className="flex items-center space-x-6">
+      <nav className="bg-black/30 backdrop-blur-md rounded-full px-3 sm:px-6 py-2 border border-white/10">
+        <ul className="flex items-center space-x-3 sm:space-x-6">
           {links.map((link) => (
             <li key={link.href}>
               <Link
                 href={link.href}
                 className={cn(
-                  "text-sm font-medium transition-colors hover:text-[#00a2ff] focus-visible:ring-2 focus-visible:ring-[#00a2ff] focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded",
+                  "text-xs sm:text-sm font-medium transition-colors hover:text-[#00a2ff] whitespace-nowrap focus-visible:ring-2 focus-visible:ring-[#00a2ff] focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded",
                   normalizePath(link.href) === currentPath
                     ? "text-[#00a2ff]"
                     : "text-white/80"
@@ -82,9 +81,8 @@ function ResumeLink() {
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex items-center text-sm font-medium text-white/80 hover:text-[#00a2ff] transition-colors focus-visible:ring-2 focus-visible:ring-[#00a2ff] focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded"
+      className="text-xs sm:text-sm font-medium text-white/80 hover:text-[#00a2ff] transition-colors whitespace-nowrap focus-visible:ring-2 focus-visible:ring-[#00a2ff] focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded"
     >
-      <FileText className="mr-1 h-4 w-4" />
       {label}
     </a>
   );
