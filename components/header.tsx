@@ -34,7 +34,7 @@ export default function Header() {
   ];
 
   return (
-    <div className="sticky top-0 z-50 flex justify-center py-4 w-full">
+    <div className="sticky top-0 z-40 flex justify-center py-4 w-full">
       <nav className="bg-black/30 backdrop-blur-md rounded-full px-3 sm:px-6 py-2 border border-white/10">
         <ul className="flex items-center space-x-3 sm:space-x-6">
           {links.map((link) => (
