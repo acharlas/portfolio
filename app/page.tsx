@@ -20,12 +20,12 @@ export default function Home() {
   ];
 
   return (
-    <div className="flex flex-col items-center">
-      <div className="w-full max-w-6xl">
+    <div className="flex flex-col items-center flex-1">
+      <div className="w-full max-w-6xl flex flex-col flex-1">
         <div className="blue-divider w-full"></div>
-        <div className="flex flex-col items-center justify-center min-h-[80vh]">
+        <div className="flex flex-col items-center justify-center flex-1">
           {/* Main content - moved higher */}
-          <div className="flex flex-col items-center mt-[-10vh]">
+          <div className="flex flex-col items-center -mt-[10vh]">
             {/* Heading */}
             <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-[#e9e1d3] text-center mb-6">
               Hi, I&apos;m Axel

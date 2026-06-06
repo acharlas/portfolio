@@ -106,11 +106,11 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="flex flex-col items-center">
-      <div className="w-full max-w-6xl">
-        <div className="blue-divider w-full mb-8"></div>
+    <div className="flex flex-col items-center flex-1">
+      <div className="w-full max-w-6xl flex flex-col flex-1">
+        <div className="blue-divider w-full mb-4 md:mb-8"></div>
 
-        <h1 className="text-4xl md:text-5xl font-bold text-gray-300 mb-6">
+        <h1 className="text-4xl md:text-5xl font-bold text-gray-300 mb-4">
           Contact
         </h1>
 
@@ -138,7 +138,7 @@ export default function ContactPage() {
           <div className="bg-gray-900/60 backdrop-blur-sm border border-gray-800/80 rounded-xl p-5 md:p-8 order-1 md:order-2">
             <h2 className="text-2xl font-bold mb-6">Send Me a Message</h2>
 
-            <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+            <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6" noValidate>
               <FormField
                 id="name"
                 label="Name *"
@@ -169,7 +169,7 @@ export default function ContactPage() {
                 value={formData.message}
                 onChange={handleChange}
                 error={errors.message}
-                rows={6}
+                rows={4}
                 required
               />
 

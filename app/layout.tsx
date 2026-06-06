@@ -74,7 +74,7 @@ export default function RootLayout({
             Skip to content
           </a>
           <LanguageSwitcher />
-          <div className="container mx-auto px-4 flex-grow">
+          <div className="container mx-auto px-4 flex-grow flex flex-col">
             <ParticleBackground />
             <Header />
             <main id="main-content" className="flex-grow flex flex-col">{children}</main>
