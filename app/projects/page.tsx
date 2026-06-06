@@ -161,7 +161,7 @@ function ProjectCard({ project, lang }: { project: (typeof projects)[0]; lang: "
   );
 
   return (
-    <article className="bg-gray-900/80 rounded-md overflow-hidden border border-gray-800 flex flex-col transition-colors hover:bg-gray-800/90 hover:border-gray-700">
+    <article className="bg-gray-900/80 backdrop-blur-sm rounded-md overflow-hidden border border-gray-800 flex flex-col transition-colors hover:bg-gray-800/90 hover:border-gray-700">
       {isClickable ? (
         <a
           href={primaryLinkUrl ?? undefined}

@@ -135,7 +135,7 @@ export default function ContactPage() {
           </div>
 
           {/* Contact Form */}
-          <div className="bg-gray-900/60 border border-gray-800/80 rounded-xl p-5 md:p-8 order-1 md:order-2">
+          <div className="bg-gray-900/60 backdrop-blur-sm border border-gray-800/80 rounded-xl p-5 md:p-8 order-1 md:order-2">
             <h2 className="text-2xl font-bold mb-6">Send Me a Message</h2>
 
             <form onSubmit={handleSubmit} className="space-y-6" noValidate>
@@ -217,7 +217,7 @@ function ContactInfoCard({
   isExternal,
 }: ContactInfoCardProps) {
   const content = (
-    <div className="bg-gray-900/60 border border-gray-800/80 rounded-xl p-4 hover:border-[#00a2ff]/30 transition-all w-5/6">
+    <div className="bg-gray-900/60 backdrop-blur-sm border border-gray-800/80 rounded-xl p-4 hover:border-[#00a2ff]/30 transition-all w-5/6">
       <div className="flex items-center">
         <div className="bg-[#00a2ff]/10 p-2 rounded-full mr-3">{icon}</div>
         <div>
@@ -262,7 +262,7 @@ function FormField({
   spellCheck,
 }: FormFieldProps) {
   const baseClasses = cn(
-    "w-full px-4 py-3 bg-gray-800/80 border rounded-md focus:outline-none focus:ring-2 transition-colors",
+    "w-full px-4 py-3 bg-gray-800/80 backdrop-blur-sm border rounded-md focus:outline-none focus:ring-2 transition-colors",
     error
       ? "border-red-500 focus:ring-red-500"
       : "border-gray-700/80 focus:ring-[#00a2ff]"

@@ -32,7 +32,7 @@ export default function Home() {
             </h1>
 
             {/* Subtitle */}
-            <p className="text-xl md:text-2xl text-gray-500 mb-12">
+            <p className="text-base sm:text-lg md:text-2xl text-gray-500 mb-12 text-center whitespace-nowrap">
               DevOps & Full-Stack Web Developer
             </p>
 
@@ -57,14 +57,14 @@ export default function Home() {
             <div className="flex flex-wrap gap-4 justify-center">
               <Link
                 href="/projects"
-                className="group flex items-center bg-[#2490cebb] hover:bg-[#0081cc] text-[#eee9e3] px-6 py-3 rounded-full transition-all"
+                className="group flex items-center bg-[#2490cebb] backdrop-blur-sm hover:bg-[#0081cc] text-[#eee9e3] px-6 py-3 rounded-full transition-all"
               >
                 See My Work
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
                 href="/contact"
-                className="group flex items-center bg-[#1118276b] hover:bg-white/10 text-[#eee9e3] border border-white/20 px-6 py-3 rounded-full transition-all"
+                className="group flex items-center bg-[#1118276b] backdrop-blur-sm hover:bg-white/10 text-[#eee9e3] border border-white/20 px-6 py-3 rounded-full transition-all"
               >
                 Contact Me
               </Link>
