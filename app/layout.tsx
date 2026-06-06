@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     siteName: "Axel Charlassier",
     images: [
       {
-        url: "/og-image.png",
+        url: "/og-image.png?v=2",
         width: 1200,
         height: 630,
         alt: "Axel Charlassier | Portfolio",
