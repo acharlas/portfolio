@@ -42,7 +42,7 @@ export default function Header() {
               <Link
                 href={link.href}
                 className={cn(
-                  "text-xs sm:text-sm font-medium transition-colors hover:text-[#00a2ff] whitespace-nowrap focus-visible:ring-2 focus-visible:ring-[#00a2ff] focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded",
+                  "text-xs sm:text-sm font-medium transition-colors hover:text-[#00a2ff] whitespace-nowrap text-readable focus-visible:ring-2 focus-visible:ring-[#00a2ff] focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded",
                   normalizePath(link.href) === currentPath
                     ? "text-[#00a2ff]"
                     : "text-white/80"
@@ -81,7 +81,7 @@ function ResumeLink() {
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      className="text-xs sm:text-sm font-medium text-white/80 hover:text-[#00a2ff] transition-colors whitespace-nowrap focus-visible:ring-2 focus-visible:ring-[#00a2ff] focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded"
+      className="text-xs sm:text-sm font-medium text-white/80 hover:text-[#00a2ff] transition-colors whitespace-nowrap text-readable focus-visible:ring-2 focus-visible:ring-[#00a2ff] focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded"
     >
       {label}
     </a>

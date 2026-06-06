@@ -25,14 +25,14 @@ export default function Home() {
         <div className="blue-divider w-full"></div>
         <div className="flex flex-col items-center justify-center flex-1">
           {/* Main content - moved higher */}
-          <div className="flex flex-col items-center -mt-[10vh]">
+          <div className="flex flex-col items-center -mt-[4vh] sm:-mt-[10vh]">
             {/* Heading */}
-            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-[#e9e1d3] text-center mb-6">
+            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-[#e9e1d3] text-center mb-6 text-readable-strong">
               Hi, I&apos;m Axel
             </h1>
 
             {/* Subtitle */}
-            <p className="text-base sm:text-lg md:text-2xl text-gray-500 mb-12 text-center whitespace-nowrap">
+            <p className="text-base sm:text-lg md:text-2xl text-gray-500 mb-12 text-center whitespace-nowrap text-readable">
               DevOps & Full-Stack Web Developer
             </p>
 

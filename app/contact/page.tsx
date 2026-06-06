@@ -110,7 +110,7 @@ export default function ContactPage() {
       <div className="w-full max-w-6xl flex flex-col flex-1">
         <div className="blue-divider w-full mb-4 md:mb-8"></div>
 
-        <h1 className="text-4xl md:text-5xl font-bold text-gray-300 mb-4">
+        <h1 className="text-4xl md:text-5xl font-bold text-gray-300 mb-4 text-readable-strong">
           Contact
         </h1>
 

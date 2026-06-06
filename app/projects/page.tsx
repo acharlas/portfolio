@@ -106,7 +106,7 @@ export default function ProjectsPage() {
       <div className="w-full max-w-6xl">
         <div className="blue-divider w-full mb-16"></div>
 
-        <h1 className="text-4xl md:text-5xl font-bold text-gray-300 mb-12">
+        <h1 className="text-4xl md:text-5xl font-bold text-gray-300 mb-12 text-readable-strong">
           {lang === "fr" ? "Projets" : "Projects"}
         </h1>
 
@@ -140,7 +140,7 @@ function ProjectCard({ project, lang }: { project: (typeof projects)[0]; lang: "
       </div>
 
       <div className="p-5 flex-1 flex flex-col">
-        <h2 className="text-xl font-bold mb-2 text-white">
+          <h2 className="text-xl font-bold mb-2 text-white text-readable-strong">
           {project.title}
         </h2>
 
@@ -155,7 +155,7 @@ function ProjectCard({ project, lang }: { project: (typeof projects)[0]; lang: "
           ))}
         </div>
 
-        <p className="text-gray-400 text-sm flex-1">{description}</p>
+        <p className="text-gray-400 text-sm flex-1 text-readable">{description}</p>
       </div>
     </>
   );

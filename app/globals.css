@@ -20,3 +20,11 @@ body {
     rgba(0, 162, 255, 0) 100%
   );
 }
+
+.text-readable {
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+
+.text-readable-strong {
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+}
